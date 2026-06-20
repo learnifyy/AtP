@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Neural Interface — Fellah Amine</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{background:#000;color:#fff;font-family:'Inter',system-ui,sans-serif;overflow:hidden;height:100svh}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-thumb{background:#1a7a3c}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 2rem;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:0.6rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.72rem;font-weight:600;letter-spacing:0.12em;
+  color:rgba(255,255,255,0.8);
+}
+.nav-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:#22c55e;box-shadow:0 0 10px #22c55e;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 10px #22c55e}50%{opacity:0.4;box-shadow:0 0 4px #22c55e}}
+
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.28);text-decoration:none;transition:color 0.3s;
+}
+.nav-links a:hover{color:#fff}
+.nav-cta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:#000;background:#fff;border:none;
+  padding:0.52rem 1.2rem;border-radius:4px;cursor:pointer;font-weight:700;
+  transition:all 0.3s;
+}
+.nav-cta:hover{background:#4ade80;box-shadow:0 0 20px rgba(74,222,128,0.35)}
+
+/* HERO */
+.hero{
+  position:relative;width:100vw;height:100svh;
+  overflow:hidden;display:flex;align-items:center;justify-content:center;
+}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+.overlay{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 55% at 50% 48%, rgba(34,197,94,0.07) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(0,0,0,0.25) 0%, transparent 35%, transparent 65%, rgba(0,0,0,0.65) 100%);
+}
+
+/* FLOATING CARDS */
+.cards{position:absolute;inset:0;pointer-events:none;z-index:5}
+.card{
+  position:absolute;
+  background:rgba(12,12,12,0.82);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:10px;
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  padding:1rem 1.3rem;
+  min-width:115px;
+  opacity:0;
+}
+.card-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(255,255,255,0.28);margin-bottom:0.35rem;
+}
+.card-value{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.45rem;font-weight:700;color:#fff;line-height:1;
+}
+.card-unit{font-size:0.68rem;font-weight:400;color:rgba(255,255,255,0.28)}
+.card-sub{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.5rem;color:#22c55e;margin-top:0.45rem;letter-spacing:0.08em;
+}
+
+/* HERO CONTENT */
+.content{
+  position:relative;z-index:10;text-align:center;
+  padding:0 1.5rem;max-width:660px;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.28em;text-transform:uppercase;
+  color:#4ade80;margin-bottom:1.6rem;opacity:0;
+}
+.eyebrow-line{display:inline-block;width:22px;height:1px;background:#4ade80}
+
+.title{
+  font-size:clamp(2.8rem,8.5vw,6.5rem);
+  font-weight:800;line-height:0.93;letter-spacing:-0.04em;
+  color:#fff;margin-bottom:0.4rem;opacity:0;
+}
+.title span{display:block}
+.title .dim{color:rgba(255,255,255,0.25);font-weight:300;font-style:italic}
+
+.sub{
+  font-size:clamp(0.78rem,1.4vw,0.92rem);
+  font-weight:300;line-height:1.72;
+  color:rgba(255,255,255,0.28);
+  max-width:360px;margin:1.4rem auto 2.4rem;opacity:0;
+}
+.actions{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;opacity:0}
+
+.btn-p{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.66rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:#000;background:#fff;border:none;
+  padding:0.82rem 1.9rem;border-radius:4px;cursor:pointer;transition:all 0.3s;
+}
+.btn-p:hover{background:#4ade80;box-shadow:0 0 28px rgba(74,222,128,0.4);transform:translateY(-1px)}
+
+.btn-s{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.66rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.45);background:transparent;
+  border:1px solid rgba(255,255,255,0.1);
+  padding:0.82rem 1.9rem;border-radius:4px;cursor:pointer;transition:all 0.3s;
+}
+.btn-s:hover{color:#fff;border-color:rgba(255,255,255,0.28)}
+
+/* STATS BAR */
+.stats{
+  position:absolute;bottom:0;left:0;right:0;z-index:10;
+  display:flex;align-items:stretch;
+  border-top:1px solid rgba(255,255,255,0.05);
+  background:rgba(0,0,0,0.72);backdrop-filter:blur(20px);
+}
+.stat{
+  flex:1;padding:0.95rem 1.2rem;
+  border-right:1px solid rgba(255,255,255,0.05);opacity:0;
+}
+.stat:last-child{border-right:none}
+.stat-l{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.46rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);margin-bottom:0.28rem;
+}
+.stat-v{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.05rem;font-weight:700;color:#fff;line-height:1;
+}
+.stat-t{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.48rem;color:#22c55e;margin-top:0.18rem;letter-spacing:0.1em;
+}
+
+/* CORNER TAG */
+.corner{
+  position:absolute;top:5rem;left:2rem;z-index:10;opacity:0;
+}
+.corner span{
+  display:block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.54rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.22);line-height:2;
+}
+.corner .cn{color:rgba(255,255,255,0.45);font-size:0.68rem;font-weight:600}
+
+/* RIGHT TAG */
+.rtag{
+  position:absolute;top:50%;right:2rem;
+  transform:translateY(-50%);z-index:10;
+  display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;opacity:0;
+}
+.rtag span{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.22);
+}
+.rtag .live{color:#4ade80}
+
+/* SCAN + NOISE */
+@keyframes scan{0%{top:-2px}100%{top:100vh}}
+.scan{
+  position:fixed;left:0;right:0;height:1px;z-index:9990;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(34,197,94,0.14),transparent);
+  animation:scan 10s linear infinite;
+}
+.noise{
+  position:fixed;inset:0;pointer-events:none;z-index:9989;
+  opacity:0.022;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:160px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:0.9rem 1.2rem}
+  .nav-links{display:none}
+  .corner{display:none}
+  .rtag{display:none}
+  .stats{flex-wrap:wrap}
+  .stat{flex:1 1 50%;border-bottom:1px solid rgba(255,255,255,0.05)}
+}
+@media(max-width:480px){
+  .stats{display:none}
+  .card{transform:scale(0.78);transform-origin:top left}
+}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="scan"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-dot"></div>
+    SynapseX
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">Network</a></li>
+    <li><a href="#">Model</a></li>
+    <li><a href="#">Streams</a></li>
+    <li><a href="#">Deploy</a></li>
+  </ul>
+  <button class="nav-cta">Download</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="c"></canvas>
+  <div class="overlay"></div>
+
+  <!-- FLOATING CARDS -->
+  <div class="cards">
+    <div class="card" id="card1" style="left:7%;top:27%">
+      <div class="card-label">Predictive Model</div>
+      <div class="card-value">93<span class="card-unit">%</span></div>
+      <div class="card-sub">↑ 2.4% this epoch</div>
+    </div>
+    <div class="card" id="card2" style="left:50%;transform:translateX(-50%);top:59%">
+      <div class="card-label">Epoch Latency</div>
+      <div class="card-value">0.4<span class="card-unit">ms</span></div>
+      <div class="card-sub">Hardware accelerated</div>
+    </div>
+    <div class="card" id="card3" style="right:7%;top:27%">
+      <div class="card-label">Synapse Ratio</div>
+      <div class="card-value">14.8<span class="card-unit">M</span></div>
+      <div class="card-sub">Distributed projection</div>
+    </div>
+    <div class="card" id="card4" style="right:1.5%;top:51%">
+      <div class="card-label">Synapse Depth</div>
+      <div class="card-value">128<span class="card-unit">L</span></div>
+      <div class="card-sub">Deep fused mapping</div>
+    </div>
+    <div class="card" id="card5" style="left:1.5%;top:51%">
+      <div class="card-label">Active Nodes</div>
+      <div class="card-value">2<span class="card-unit">M</span></div>
+      <div class="card-sub">Neural net active</div>
+    </div>
+  </div>
+
+  <!-- CORNER TAG -->
+  <div class="corner">
+    <span class="cn">Fellah Amine</span>
+    <span>fellah.amine2050@gmail.com</span>
+    <span>Algeria · 2050</span>
+  </div>
+
+  <!-- RIGHT TAG -->
+  <div class="rtag">
+    <span>Neural Interface</span>
+    <span>v2.4.0</span>
+    <span class="live">● Live</span>
+  </div>
+
+  <!-- CENTER CONTENT -->
+  <div class="content">
+    <div class="eyebrow">
+      <span class="eyebrow-line"></span>
+      Neural Interface
+      <span class="eyebrow-line"></span>
+    </div>
+    <h1 class="title">
+      <span>Brain</span>
+      <span>And Body</span>
+      <span class="dim">One Network</span>
+    </h1>
+    <p class="sub">
+      Direct neural-digital integration. Predictive cognition,
+      hardware-accelerated execution at 0.4ms latency.
+    </p>
+    <div class="actions">
+      <button class="btn-p">Get Access</button>
+      <button class="btn-s">View Model</button>
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats">
+    <div class="stat" id="s1">
+      <div class="stat-l">Platform</div>
+      <div class="stat-v">SynapseX</div>
+      <div class="stat-t">v2.4.0</div>
+    </div>
+    <div class="stat" id="s2">
+      <div class="stat-l">Latency</div>
+      <div class="stat-v">0.4ms</div>
+      <div class="stat-t">↓ 18% improved</div>
+    </div>
+    <div class="stat" id="s3">
+      <div class="stat-l">Synapse</div>
+      <div class="stat-v">14.8M</div>
+      <div class="stat-t">↑ Active streams</div>
+    </div>
+    <div class="stat" id="s4">
+      <div class="stat-l">Depth</div>
+      <div class="stat-v">128L</div>
+      <div class="stat-t">Fused layers</div>
+    </div>
+    <div class="stat" id="s5">
+      <div class="stat-l">Accuracy</div>
+      <div class="stat-v">93%</div>
+      <div class="stat-t">↑ Predictive model</div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ── CANVAS ANIMATION ──────────────────────────────────────
+const canvas = document.getElementById('c')
+const ctx = canvas.getContext('2d')
+const mouse = { x: 0.5, y: 0.45 }
+let time = 0
+let raf = 0
+
+function resize() {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+}
+resize()
+window.addEventListener('resize', resize)
+
+window.addEventListener('mousemove', function(e) {
+  mouse.x = e.clientX / window.innerWidth
+  mouse.y = e.clientY / window.innerHeight
+})
+window.addEventListener('touchmove', function(e) {
+  mouse.x = e.touches[0].clientX / window.innerWidth
+  mouse.y = e.touches[0].clientY / window.innerHeight
+}, { passive: true })
+
+var blobs = []
+for (var i = 0; i < 6; i++) {
+  blobs.push({
+    x: 0.25 + Math.random() * 0.5,
+    y: 0.2  + Math.random() * 0.6,
+    vx: (Math.random() - 0.5) * 0.0008,
+    vy: (Math.random() - 0.5) * 0.0006,
+    radius: 0.18 + Math.random() * 0.22,
+    opacity: 0.07 + Math.random() * 0.1
+  })
+}
+
+function render() {
+  var W = canvas.width
+  var H = canvas.height
+  time += 0.008
+
+  ctx.clearRect(0, 0, W, H)
+  ctx.fillStyle = '#000'
+  ctx.fillRect(0, 0, W, H)
+
+  var mx = mouse.x
+  var my = mouse.y
+
+  for (var i = 0; i < blobs.length; i++) {
+    var b = blobs[i]
+    b.x += b.vx + Math.sin(time * 0.7 + i) * 0.0003
+    b.y += b.vy + Math.cos(time * 0.5 + i) * 0.0002
+    if (b.x < 0.1 || b.x > 0.9) b.vx *= -1
+    if (b.y < 0.1 || b.y > 0.9) b.vy *= -1
+    b.x += (mx - b.x) * 0.0005
+    b.y += (my - b.y) * 0.0004
+
+    var cx2 = b.x * W
+    var cy2 = b.y * H
+    var r   = b.radius * Math.min(W, H)
+    var g   = ctx.createRadialGradient(cx2, cy2, 0, cx2, cy2, r)
+    var m   = i % 3
+
+    if (m === 0) {
+      g.addColorStop(0,   'rgba(34,197,94,'  + (b.opacity*1.4) + ')')
+      g.addColorStop(0.4, 'rgba(20,160,60,'  + (b.opacity*0.7) + ')')
+      g.addColorStop(1,   'rgba(0,0,0,0)')
+    } else if (m === 1) {
+      g.addColorStop(0,   'rgba(16,120,50,'  + b.opacity + ')')
+      g.addColorStop(0.5, 'rgba(10,80,30,'   + (b.opacity*0.5) + ')')
+      g.addColorStop(1,   'rgba(0,0,0,0)')
+    } else {
+      g.addColorStop(0,   'rgba(134,239,172,'+ (b.opacity*0.6) + ')')
+      g.addColorStop(0.6, 'rgba(34,197,94,'  + (b.opacity*0.3) + ')')
+      g.addColorStop(1,   'rgba(0,0,0,0)')
+    }
+
+    ctx.globalCompositeOperation = 'screen'
+    ctx.fillStyle = g
+    ctx.beginPath()
+    ctx.arc(cx2, cy2, r, 0, Math.PI * 2)
+    ctx.fill()
+  }
+
+  // Core glow follows mouse
+  var cg = ctx.createRadialGradient(
+    mx*W, my*H, 0,
+    mx*W, my*H, Math.min(W,H)*0.28
+  )
+  cg.addColorStop(0,   'rgba(200,255,220,0.17)')
+  cg.addColorStop(0.3, 'rgba(34,197,94,0.11)')
+  cg.addColorStop(0.7, 'rgba(20,120,50,0.05)')
+  cg.addColorStop(1,   'rgba(0,0,0,0)')
+  ctx.globalCompositeOperation = 'screen'
+  ctx.fillStyle = cg
+  ctx.beginPath()
+  ctx.arc(mx*W, my*H, Math.min(W,H)*0.28, 0, Math.PI*2)
+  ctx.fill()
+
+  // Grid
+  ctx.globalCompositeOperation = 'source-over'
+  ctx.strokeStyle = 'rgba(34,197,94,0.035)'
+  ctx.lineWidth = 1
+  var step = Math.min(W,H) * 0.12
+  for (var gx = 0; gx < W; gx += step) {
+    ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,H); ctx.stroke()
+  }
+  for (var gy = 0; gy < H; gy += step) {
+    ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke()
+  }
+
+  // Neural lines between blobs
+  ctx.globalCompositeOperation = 'screen'
+  for (var i = 0; i < blobs.length; i++) {
+    for (var j = i+1; j < blobs.length; j++) {
+      var a  = blobs[i], bj = blobs[j]
+      var ax = a.x*W,  ay = a.y*H
+      var bx = bj.x*W, by = bj.y*H
+      var d  = Math.sqrt((ax-bx)*(ax-bx)+(ay-by)*(ay-by))
+      var md = Math.min(W,H)*0.5
+      if (d < md) {
+        var al = (1 - d/md) * 0.055
+        var lg = ctx.createLinearGradient(ax,ay,bx,by)
+        lg.addColorStop(0, 'rgba(34,197,94,'+al+')')
+        lg.addColorStop(1, 'rgba(34,197,94,'+(al*0.3)+')')
+        ctx.strokeStyle = lg
+        ctx.lineWidth = 0.7
+        ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke()
+      }
+    }
+  }
+
+  // Vignette
+  ctx.globalCompositeOperation = 'source-over'
+  var vg = ctx.createRadialGradient(W/2,H/2,0, W/2,H/2, Math.max(W,H)*0.72)
+  vg.addColorStop(0,   'rgba(0,0,0,0)')
+  vg.addColorStop(0.6, 'rgba(0,0,0,0)')
+  vg.addColorStop(1,   'rgba(0,0,0,0.88)')
+  ctx.fillStyle = vg
+  ctx.fillRect(0,0,W,H)
+
+  raf = requestAnimationFrame(render)
+}
+render()
+
+// ── GSAP ANIMATIONS ───────────────────────────────────────
+var cards = ['card1','card2','card3','card4','card5']
+var floatY = [-18, -14, -20, -12, -16]
+var floatD = [4.2,  3.8,  5.0,  4.5,  3.6]
+var stats  = ['s1','s2','s3','s4','s5']
+
+gsap.set('.eyebrow', { y:20 })
+gsap.set('.title',   { y:40 })
+gsap.set('.sub',     { y:20 })
+gsap.set('.actions', { y:20 })
+gsap.set('.corner',  { x:-20 })
+gsap.set('.rtag',    { x:20 })
+
+var tl = gsap.timeline({ delay: 0.25 })
+tl.to('.eyebrow', { opacity:1, y:0, duration:0.7, ease:'power3.out' })
+  .to('.title',   { opacity:1, y:0, duration:0.9, ease:'power4.out' }, '-=0.4')
+  .to('.sub',     { opacity:1, y:0, duration:0.7, ease:'power3.out' }, '-=0.5')
+  .to('.actions', { opacity:1, y:0, duration:0.7, ease:'power3.out' }, '-=0.45')
+  .to('.corner',  { opacity:1, x:0, duration:0.6, ease:'power3.out' }, '-=0.5')
+  .to('.rtag',    { opacity:1, x:0, duration:0.6, ease:'power3.out' }, '-=0.5')
+
+cards.forEach(function(id, i) {
+  var el = document.getElementById(id)
+  if (!el) return
+  gsap.fromTo(el,
+    { opacity:0, y:65, scale:0.84 },
+    { opacity:1, y:0,  scale:1, duration:1, delay:0.8+i*0.14, ease:'power4.out' }
+  )
+  gsap.to(el, {
+    y: floatY[i], duration: floatD[i],
+    yoyo:true, repeat:-1, ease:'sine.inOut', delay: i*0.45
+  })
+})
+
+stats.forEach(function(id, i) {
+  var el = document.getElementById(id)
+  if (!el) return
+  gsap.fromTo(el,
+    { opacity:0, y:18 },
+    { opacity:1, y:0, duration:0.55, delay:1.4+i*0.08, ease:'power3.out' }
+  )
+})
+</script>
+</body>
+</html>
