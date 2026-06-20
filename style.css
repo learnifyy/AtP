@@ -1,0 +1,276 @@
+<!-- أضف هذا CSS داخل <style> -->
+<style>
+/* ── SKILLS & CERTS SECTION ── */
+#skills-section {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  padding: 100px 20px 80px;
+}
+
+.skills-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+@media(max-width: 700px) {
+  .skills-wrap { grid-template-columns: 1fr; gap: 30px; }
+}
+
+.sk-box {
+  background: rgba(0,0,0,0.75);
+  border: 1px solid rgba(139,0,0,0.18);
+  border-radius: 14px;
+  padding: 32px 26px;
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .9s ease, transform .9s ease;
+}
+.sk-box.visible { opacity: 1; transform: translateY(0); }
+
+.sk-box-title {
+  font-family: 'Inter', sans-serif;
+  font-size: .5rem;
+  letter-spacing: .46em;
+  color: var(--dim);
+  text-transform: uppercase;
+  font-weight: 300;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+/* SKILL ROW */
+.sk-row {
+  margin-bottom: 22px;
+}
+.sk-row:last-child { margin-bottom: 0; }
+
+.sk-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.sk-name {
+  font-size: .68rem;
+  color: var(--off);
+  letter-spacing: .12em;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+.sk-pct {
+  font-family: 'Inter', sans-serif;
+  font-size: .62rem;
+  color: var(--red2);
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+/* TUBE */
+.tube-wrap {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 99px;
+  border: 1px solid rgba(139,0,0,0.15);
+  overflow: hidden;
+  position: relative;
+}
+.tube-fill {
+  height: 100%;
+  border-radius: 99px;
+  width: 0%;
+  background: linear-gradient(to right, #4a0000, #8b0000, #b00000);
+  box-shadow: 0 0 8px rgba(139,0,0,0.6), 0 0 20px rgba(100,0,0,0.3);
+  transition: width 1.4s cubic-bezier(.4,0,.2,1);
+  position: relative;
+}
+.tube-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 20px; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(200,50,50,0.6));
+  border-radius: 99px;
+  animation: shimmer 2s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%,100% { opacity: .4; }
+  50%      { opacity: 1;  }
+}
+
+/* CERT ROW */
+.cert-row {
+  margin-bottom: 22px;
+}
+.cert-row:last-child { margin-bottom: 0; }
+
+.cert-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+/* Blurred cert name */
+.cert-name {
+  font-size: .68rem;
+  color: rgba(232,232,232,0.25);
+  letter-spacing: .12em;
+  font-weight: 300;
+  text-transform: uppercase;
+  filter: blur(4px);
+  user-select: none;
+  pointer-events: none;
+}
+.cert-pct {
+  font-family: 'Inter', sans-serif;
+  font-size: .62rem;
+  color: var(--red2);
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+/* cert tube same as skill tube */
+.cert-tube-wrap {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 99px;
+  border: 1px solid rgba(139,0,0,0.15);
+  overflow: hidden;
+}
+.cert-tube-fill {
+  height: 100%;
+  border-radius: 99px;
+  width: 0%;
+  background: linear-gradient(to right, #2a0000, #6b0000, #950000);
+  box-shadow: 0 0 8px rgba(139,0,0,0.5), 0 0 16px rgba(100,0,0,0.25);
+  transition: width 1.4s cubic-bezier(.4,0,.2,1);
+  position: relative;
+}
+.cert-tube-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 16px; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(180,40,40,0.5));
+  border-radius: 99px;
+  animation: shimmer 2.4s ease-in-out infinite;
+}
+</style>
+
+<!-- أضف هذا HTML قبل <section id="section-three"> -->
+<section id="skills-section">
+  <div class="skills-wrap">
+
+    <!-- SKILLS -->
+    <div class="sk-box" id="sk-box-1">
+      <div class="sk-box-title">Skills</div>
+
+      <div class="sk-row">
+        <div class="sk-top">
+          <span class="sk-name">Programming</span>
+          <span class="sk-pct">35%</span>
+        </div>
+        <div class="tube-wrap">
+          <div class="tube-fill" data-w="35"></div>
+        </div>
+      </div>
+
+      <div class="sk-row">
+        <div class="sk-top">
+          <span class="sk-name">Photography</span>
+          <span class="sk-pct">88%</span>
+        </div>
+        <div class="tube-wrap">
+          <div class="tube-fill" data-w="88"></div>
+        </div>
+      </div>
+
+      <div class="sk-row">
+        <div class="sk-top">
+          <span class="sk-name">Sports</span>
+          <span class="sk-pct">92%</span>
+        </div>
+        <div class="tube-wrap">
+          <div class="tube-fill" data-w="92"></div>
+        </div>
+      </div>
+
+      <div class="sk-row">
+        <div class="sk-top">
+          <span class="sk-name">Chess</span>
+          <span class="sk-pct">67%</span>
+        </div>
+        <div class="tube-wrap">
+          <div class="tube-fill" data-w="67"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CERTIFICATES -->
+    <div class="sk-box" id="sk-box-2">
+      <div class="sk-box-title">Certificates</div>
+
+      <div class="cert-row">
+        <div class="cert-top">
+          <span class="cert-name">English Certificate C1</span>
+          <span class="cert-pct">20%</span>
+        </div>
+        <div class="cert-tube-wrap">
+          <div class="cert-tube-fill" data-w="20"></div>
+        </div>
+      </div>
+
+      <div class="cert-row">
+        <div class="cert-top">
+          <span class="cert-name">Drone Pilot (CRTI)</span>
+          <span class="cert-pct">66%</span>
+        </div>
+        <div class="cert-tube-wrap">
+          <div class="cert-tube-fill" data-w="66"></div>
+        </div>
+      </div>
+
+      <div class="cert-row">
+        <div class="cert-top">
+          <span class="cert-name">AI Academy</span>
+          <span class="cert-pct">80%</span>
+        </div>
+        <div class="cert-tube-wrap">
+          <div class="cert-tube-fill" data-w="80"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- أضف هذا JS داخل (function(){ ... })(); قبل النهاية -->
+<script>
+/* ══ SKILLS & CERTS INTERSECTION ══ */
+const skBoxes = document.querySelectorAll('.sk-box');
+const skObs   = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      /* animate tubes */
+      entry.target.querySelectorAll('.tube-fill, .cert-tube-fill').forEach(bar => {
+        const w = bar.getAttribute('data-w');
+        setTimeout(() => { bar.style.width = w + '%'; }, 200);
+      });
+      skObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+skBoxes.forEach(box => skObs.observe(box));
+</script>
