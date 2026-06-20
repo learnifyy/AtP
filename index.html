@@ -6,99 +6,946 @@
 <title>Fellah Amine · 2050</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Space+Grotesk:wght@300;400;700&display=swap');
+
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{--black:#000000;--red:#8b0000;--red2:#a00000;--white:#ffffff;--off:#e8e8e8;--dim:#555;}
+
+:root{
+  --black:#000000;
+  --black2:#050505;
+  --red:#8b0000;
+  --red2:#a00000;
+  --red3:#6b0000;
+  --white:#ffffff;
+  --off:#e8e8e8;
+  --dim:#555;
+  --border:rgba(255,255,255,0.06);
+  --border-h:rgba(139,0,0,0.5);
+  --card:rgba(0,0,0,0.6);
+}
+
 html{scroll-behavior:smooth;}
-body{background:var(--black);color:var(--off);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;}
-::-webkit-scrollbar{width:1px;}::-webkit-scrollbar-thumb{background:var(--red);}
+body{
+  background:var(--black);
+  color:var(--off);
+  font-family:'Space Grotesk',sans-serif;
+  overflow-x:hidden;
+}
+::-webkit-scrollbar{width:1px;}
+::-webkit-scrollbar-thumb{background:var(--red);}
 
-#star-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;background:#000;}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 48px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(0,0,0,0.98),transparent);}
-.nav-logo{font-family:'Inter',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.4em;color:var(--white);text-transform:uppercase;}
-.nav-tag{font-size:.58rem;letter-spacing:.3em;color:var(--dim);font-weight:300;}
+/* ── STAR CANVAS ── */
+#star-canvas{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:#000;
+}
 
-#hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:1;}
-.hero-content{position:relative;z-index:5;text-align:center;pointer-events:none;opacity:0;animation:fadeUp 1s ease 0.4s forwards;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
-.hero-main{font-family:'Inter',sans-serif;font-size:clamp(5rem,22vw,18rem);font-weight:900;color:#8b0000;line-height:1;letter-spacing:-.03em;text-shadow:0 0 80px rgba(139,0,0,0.5),0 0 160px rgba(139,0,0,0.25),0 0 300px rgba(100,0,0,0.15);}
-.hero-name-sub{margin-top:22px;font-size:clamp(.9rem,2.5vw,1.4rem);font-weight:300;color:var(--off);letter-spacing:.35em;text-transform:uppercase;opacity:.5;}
-.hero-role{margin-top:20px;font-size:.68rem;color:var(--dim);letter-spacing:.2em;font-weight:300;min-height:1.4em;}
-.hero-role::after{content:'_';color:var(--red2);animation:blink 1s step-end infinite;}
+/* ── NAV ── */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:100;
+  padding:22px 48px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.98),transparent);
+}
+.nav-logo{
+  font-family:'Inter',sans-serif;
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.4em;
+  color:var(--white);
+  text-transform:uppercase;
+}
+.nav-tag{
+  font-size:.58rem;
+  letter-spacing:.3em;
+  color:var(--dim);
+  font-weight:300;
+}
+
+/* ── HERO ── */
+#hero{
+  position:relative;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  z-index:1;
+}
+
+#meteor-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;height:100%;
+  z-index:2;
+  pointer-events:none;
+}
+
+.hero-content{
+  position:relative;
+  z-index:5;
+  text-align:center;
+  pointer-events:none;
+  opacity:0;
+  animation:fadeUp 1s ease 2.4s forwards;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(18px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.hero-eyebrow{
+  font-size:.54rem;
+  letter-spacing:.55em;
+  color:var(--dim);
+  text-transform:uppercase;
+  font-weight:300;
+  margin-bottom:20px;
+}
+.hero-name{
+  font-family:'Inter',sans-serif;
+  font-size:clamp(3rem,10vw,8rem);
+  font-weight:900;
+  color:var(--white);
+  text-transform:uppercase;
+  letter-spacing:-.02em;
+  line-height:.93;
+}
+.hero-name span{
+  display:block;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(139,0,0,0.7);
+}
+.hero-2050{
+  margin-top:16px;
+  font-size:clamp(.75rem,2vw,1rem);
+  letter-spacing:.75em;
+  color:var(--red);
+  font-weight:300;
+  opacity:.8;
+}
+.hero-role{
+  margin-top:26px;
+  font-size:.68rem;
+  color:var(--dim);
+  letter-spacing:.2em;
+  font-weight:300;
+  min-height:1.4em;
+}
+.hero-role::after{
+  content:'_';
+  color:var(--red2);
+  animation:blink 1s step-end infinite;
+}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
 
-/* ── SKILLS SECTION ── */
-#skills-section{position:relative;z-index:2;background:transparent;padding:100px 20px 80px;}
-.skills-wrap{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;}
-@media(max-width: 700px){.skills-wrap{grid-template-columns:1fr;gap:30px;}}
-.sk-box{background:rgba(0,0,0,0.75);border:1px solid rgba(139,0,0,0.18);border-radius:14px;padding:32px 26px;backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s ease;}
-.sk-box.visible{opacity:1;transform:translateY(0);}
-.sk-box-title{font-family:'Inter',sans-serif;font-size:.5rem;letter-spacing:.46em;color:var(--dim);text-transform:uppercase;font-weight:300;margin-bottom:28px;text-align:center;}
-.sk-row,.cert-row{margin-bottom:22px;}
-.sk-top,.cert-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
-.sk-name,.cert-name{font-size:.68rem;color:var(--off);letter-spacing:.12em;font-weight:300;text-transform:uppercase;}
-.cert-name{color:rgba(232,232,232,0.25);filter:blur(4px);user-select:none;pointer-events:none;}
-.sk-pct,.cert-pct{font-family:'Inter',sans-serif;font-size:.62rem;color:var(--red2);font-weight:700;letter-spacing:.08em;}
-.tube-wrap,.cert-tube-wrap{width:100%;height:6px;background:rgba(255,255,255,0.04);border-radius:99px;border:1px solid rgba(139,0,0,0.15);overflow:hidden;}
-.tube-fill,.cert-tube-fill{height:100%;border-radius:99px;width:0%;background:linear-gradient(to right,#4a0000,#8b0000,#b00000);transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+.scroll-hint{
+  position:absolute;
+  bottom:28px;left:50%;
+  transform:translateX(-50%);
+  z-index:5;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  opacity:0;
+  animation:fadeUp .8s ease 3.2s forwards;
+}
+.scroll-hint span{
+  font-size:.46rem;
+  letter-spacing:.42em;
+  color:var(--dim);
+  text-transform:uppercase;
+}
+.scroll-line{
+  width:1px;height:42px;
+  background:linear-gradient(var(--red),transparent);
+  animation:sl 2s ease-in-out infinite;
+}
+@keyframes sl{
+  0%,100%{opacity:.2;transform:scaleY(.4);}
+  50%{opacity:.7;transform:scaleY(1);}
+}
+
+/* ── CARDS TRIGGER ── */
+#cards-trigger{
+  position:relative;
+  z-index:2;
+  height:180vh;
+}
+
+/* ── FIXED CARDS ── */
+#fixed-cards{
+  position:fixed;
+  inset:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  opacity:0;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  max-width:800px;
+  width:90%;
+  padding:0 20px;
+}
+@media(max-width:660px){
+  .grid{grid-template-columns:1fr;max-width:290px;gap:10px;}
+}
+
+.card{
+  background:rgba(0,0,0,0.72);
+  border:1px solid rgba(139,0,0,0.2);
+  border-radius:14px;
+  padding:26px 20px;
+  backdrop-filter:blur(40px);
+  -webkit-backdrop-filter:blur(40px);
+  position:relative;
+  overflow:hidden;
+  transition:border-color .35s,box-shadow .35s,transform .35s;
+}
+.card::before{
+  content:'';
+  position:absolute;
+  top:0;left:20%;right:20%;
+  height:1px;
+  background:linear-gradient(to right,transparent,rgba(139,0,0,.35),transparent);
+}
+.card:hover{
+  border-color:rgba(139,0,0,.55);
+  box-shadow:0 20px 50px rgba(0,0,0,.9),0 0 40px rgba(100,0,0,.12);
+  transform:translateY(-6px);
+}
+.c-label{
+  font-size:.48rem;
+  letter-spacing:.32em;
+  color:var(--red2);
+  text-transform:uppercase;
+  font-weight:400;
+  margin-bottom:14px;
+  opacity:.8;
+}
+.c-value{
+  font-family:'Inter',sans-serif;
+  font-size:2.8rem;
+  font-weight:900;
+  color:var(--white);
+  line-height:1;
+  margin-bottom:16px;
+}
+.c-value small{font-size:1.1rem;font-weight:300;color:var(--dim);}
+.c-list{
+  list-style:none;
+  border-top:1px solid rgba(255,255,255,.04);
+  padding-top:12px;
+}
+.c-list li{
+  font-size:.58rem;
+  color:var(--dim);
+  padding:3px 0;
+  letter-spacing:.06em;
+  font-weight:300;
+}
+.c-foot{
+  margin-top:12px;
+  font-size:.46rem;
+  letter-spacing:.25em;
+  color:rgba(139,0,0,.35);
+  text-transform:uppercase;
+}
+
+/* ── ABOUT ── */
+#section-three{
+  position:relative;
+  z-index:2;
+  background:transparent;
+  padding:110px 20px 80px;
+}
+#section-three-inner{
+  max-width:560px;
+  margin:0 auto;
+  opacity:0;
+  transform:translateY(32px);
+  transition:opacity .9s ease,transform .9s ease;
+}
+#section-three-inner.visible{opacity:1;transform:translateY(0);}
+
+.sec-lbl{
+  font-size:.5rem;
+  letter-spacing:.46em;
+  color:var(--dim);
+  text-transform:uppercase;
+  font-weight:300;
+  margin-bottom:8px;
+  text-align:center;
+}
+.sec-title{
+  font-family:'Inter',sans-serif;
+  font-size:clamp(1.3rem,4vw,2.1rem);
+  font-weight:900;
+  color:var(--white);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  text-align:center;
+  margin-bottom:14px;
+}
+.g-line{
+  width:28px;height:1px;
+  background:var(--red);
+  margin:0 auto 32px;
+  opacity:.5;
+}
+.about-box{
+  background:rgba(0,0,0,0.72);
+  border:1px solid rgba(139,0,0,.18);
+  border-radius:14px;
+  padding:30px 26px;
+  backdrop-filter:blur(40px);
+  -webkit-backdrop-filter:blur(40px);
+}
+.a-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.a-row:last-child{border-bottom:none;}
+.a-key{
+  font-size:.5rem;
+  letter-spacing:.22em;
+  color:var(--dim);
+  text-transform:uppercase;
+  font-weight:300;
+  min-width:110px;
+}
+.a-val{
+  font-size:.73rem;
+  color:var(--off);
+  text-align:right;
+  font-weight:300;
+}
+.a-val.accent{
+  color:var(--red2);
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  letter-spacing:.12em;
+}
+
+/* ── CONTACT ── */
+#contact{
+  position:relative;
+  z-index:2;
+  background:transparent;
+  padding:20px 20px 90px;
+}
+.contact-wrap{max-width:420px;margin:0 auto;text-align:center;}
+.c-box{
+  margin-top:32px;
+  background:rgba(0,0,0,0.72);
+  border:1px solid rgba(139,0,0,.18);
+  border-radius:14px;
+  padding:26px 22px;
+  backdrop-filter:blur(40px);
+  -webkit-backdrop-filter:blur(40px);
+}
+.c-item{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  text-decoration:none;
+  color:var(--dim);
+  transition:color .25s;
+}
+.c-item:last-child{border-bottom:none;}
+.c-item:hover{color:var(--white);}
+.c-ico{font-size:.9rem;width:24px;text-align:center;opacity:.4;}
+.c-txt{font-size:.7rem;letter-spacing:.05em;font-weight:300;}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:2;
+  background:transparent;
+  padding:22px;text-align:center;
+  border-top:1px solid rgba(139,0,0,.1);
+}
+footer p{
+  font-size:.5rem;letter-spacing:.26em;
+  color:var(--dim);font-weight:300;
+}
+footer span{color:var(--red2);}
+
+@media(max-width:500px){
+  nav{padding:16px 20px;}
+  .about-box{padding:20px 14px;}
+  .c-box{padding:20px 14px;}
+}
 </style>
 </head>
 <body>
 
+<!-- PURE BLACK STAR FIELD -->
 <canvas id="star-canvas"></canvas>
+
 <nav>
   <div class="nav-logo">F · Amine</div>
   <div class="nav-tag">2050 · Algeria</div>
 </nav>
 
 <section id="hero">
+  <canvas id="meteor-canvas"></canvas>
   <div class="hero-content">
-    <div class="hero-main">2050</div>
-    <div class="hero-name-sub">Fellah Amine</div>
+    <div class="hero-eyebrow">Portfolio · 2026</div>
+    <div class="hero-name">
+      Fellah
+      <span>Amine</span>
+    </div>
+    <div class="hero-2050">2050</div>
     <div class="hero-role" id="typeEl"></div>
   </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
 </section>
 
-<section id="skills-section">
-  <div class="skills-wrap">
-    <div class="sk-box" id="sk-box-1">
-      <div class="sk-box-title">Skills</div>
-      <div class="sk-row"><div class="sk-top"><span class="sk-name">Programming</span><span class="sk-pct">35%</span></div><div class="tube-wrap"><div class="tube-fill" data-w="35"></div></div></div>
-      <div class="sk-row"><div class="sk-top"><span class="sk-name">Photography</span><span class="sk-pct">88%</span></div><div class="tube-wrap"><div class="tube-fill" data-w="88"></div></div></div>
-      <div class="sk-row"><div class="sk-top"><span class="sk-name">Sports</span><span class="sk-pct">92%</span></div><div class="tube-wrap"><div class="tube-fill" data-w="92"></div></div></div>
-      <div class="sk-row"><div class="sk-top"><span class="sk-name">Chess</span><span class="sk-pct">67%</span></div><div class="tube-wrap"><div class="tube-fill" data-w="67"></div></div></div>
+<div id="cards-trigger">
+  <div id="fixed-cards">
+    <div class="grid">
+
+      <div class="card">
+        <div class="c-label">Discipline</div>
+        <div class="c-value">93<small>%</small></div>
+        <ul class="c-list">
+          <li>Chess</li>
+          <li>Photography</li>
+          <li>Self-taught dev</li>
+        </ul>
+        <div class="c-foot">Autonomous System</div>
+      </div>
+
+      <div class="card">
+        <div class="c-label">Chess</div>
+        <div class="c-value">♟</div>
+        <ul class="c-list">
+          <li>Tactical analysis</li>
+          <li>Strategic vision</li>
+          <li>Competitive play</li>
+        </ul>
+        <div class="c-foot">Analytical Engine</div>
+      </div>
+
+      <div class="card">
+        <div class="c-label">Freelance</div>
+        <div class="c-value">2<small>yr</small></div>
+        <ul class="c-list">
+          <li>Fiverr · 2021–2022</li>
+          <li>Web development</li>
+          <li>Client delivery</li>
+        </ul>
+        <div class="c-foot">Freelance Protocol</div>
+      </div>
+
     </div>
-    <div class="sk-box" id="sk-box-2">
-      <div class="sk-box-title">Certificates</div>
-      <div class="cert-row"><div class="cert-top"><span class="cert-name">English Certificate C1</span><span class="cert-pct">20%</span></div><div class="cert-tube-wrap"><div class="cert-tube-fill" data-w="20"></div></div></div>
-      <div class="cert-row"><div class="cert-top"><span class="cert-name">Drone Pilot (CRTI)</span><span class="cert-pct">66%</span></div><div class="cert-tube-wrap"><div class="cert-tube-fill" data-w="66"></div></div></div>
-      <div class="cert-row"><div class="cert-top"><span class="cert-name">AI Academy</span><span class="cert-pct">80%</span></div><div class="cert-tube-wrap"><div class="cert-tube-fill" data-w="80"></div></div></div>
+  </div>
+</div>
+
+<section id="section-three">
+  <div id="section-three-inner">
+    <div class="sec-lbl">Identity</div>
+    <div class="sec-title">About</div>
+    <div class="g-line"></div>
+    <div class="about-box">
+      <div class="a-row">
+        <span class="a-key">Name</span>
+        <span class="a-val">Fellah Amine</span>
+      </div>
+      <div class="a-row">
+        <span class="a-key">Location</span>
+        <span class="a-val">Ain El Assel · Taref · Algeria</span>
+      </div>
+      <div class="a-row">
+        <span class="a-key">Status</span>
+        <span class="a-val">University Student</span>
+      </div>
+      <div class="a-row">
+        <span class="a-key">Chess</span>
+        <span class="a-val">Player</span>
+      </div>
+      <div class="a-row">
+        <span class="a-key">Photography</span>
+        <span class="a-val">Visual Creator</span>
+      </div>
+      <div class="a-row">
+        <span class="a-key">Development</span>
+        <span class="a-val">Self-Taught</span>
+      </div>
+      <div class="a-row">
+        <span class="a-key">Freelance</span>
+        <span class="a-val">Fiverr · 2021 — 2022</span>
+      </div>
+      <div class="a-row">
+        <span class="a-key">System ID</span>
+        <span class="a-val accent">2050</span>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="section-three">...</section>
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="sec-lbl">Signal</div>
+    <div class="sec-title">Contact</div>
+    <div class="g-line"></div>
+    <div class="c-box">
+      <a href="mailto:fellah.amine2050@gmail.com" class="c-item">
+        <span class="c-ico">✉</span>
+        <span class="c-txt">fellah.amine2050@gmail.com</span>
+      </a>
+      <a href="tel:0562664409" class="c-item">
+        <span class="c-ico">◎</span>
+        <span class="c-txt">0562 664 409</span>
+      </a>
+      <div class="c-item">
+        <span class="c-ico">◈</span>
+        <span class="c-txt">Ain El Assel · Taref · Algeria</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 &nbsp;·&nbsp; <span>Fellah Amine</span> &nbsp;·&nbsp; <span>2050</span> &nbsp;·&nbsp; All Systems Online</p>
+</footer>
 
 <script>
 (function(){
-/* ... كود الـ JS الخاص بالنجوم والأنيميشن ... */
 
-/* ══ SKILLS & CERTS INTERSECTION ══ */
-const skBoxes = document.querySelectorAll('.sk-box');
-const skObs = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-      entry.target.querySelectorAll('.tube-fill, .cert-tube-fill').forEach(bar => {
-        const w = bar.getAttribute('data-w');
-        setTimeout(() => { bar.style.width = w + '%'; }, 200);
+/* ══════════════════════════════════
+   STAR CANVAS — pure black + stars
+══════════════════════════════════ */
+const sc   = document.getElementById('star-canvas');
+const sctx = sc.getContext('2d');
+let SW, SH;
+
+function resizeStar(){
+  SW = sc.width  = innerWidth;
+  SH = sc.height = innerHeight;
+}
+resizeStar();
+addEventListener('resize', resizeStar);
+
+/* Generate stars — tiny, white, sharp */
+const STARS = [];
+const COUNT = 320;
+for(let i = 0; i < COUNT; i++){
+  STARS.push({
+    x  : Math.random(),
+    y  : Math.random(),
+    r  : Math.random() * 0.7 + 0.1,          /* 0.1 – 0.8 px */
+    a  : Math.random() * 0.6 + 0.4,           /* 0.4 – 1.0 */
+    tw : Math.random() * 0.008 + 0.002,       /* twinkle speed */
+    tp : Math.random() * Math.PI * 2,         /* twinkle phase */
+    big: Math.random() < 0.04                 /* rare bigger star */
+  });
+}
+
+/* 3D wireframe objects */
+/* ── Sphere ── */
+function buildSphere(R, rings, segs){
+  const v = [];
+  for(let ri = 0; ri <= rings; ri++){
+    const phi = (ri/rings)*Math.PI;
+    for(let si = 0; si <= segs; si++){
+      const th = (si/segs)*Math.PI*2;
+      v.push({
+        x: Math.sin(phi)*Math.cos(th)*R,
+        y: Math.cos(phi)*R,
+        z: Math.sin(phi)*Math.sin(th)*R,
+        ri, si
       });
-      skObs.unobserve(entry.target);
+    }
+  }
+  return {v, rings, segs};
+}
+
+/* ── Octahedron ── */
+function buildOcta(R){
+  const verts = [
+    { x:0,  y:R,  z:0  },
+    { x:R,  y:0,  z:0  },
+    { x:0,  y:0,  z:R  },
+    { x:-R, y:0,  z:0  },
+    { x:0,  y:0,  z:-R },
+    { x:0,  y:-R, z:0  }
+  ];
+  const faces = [
+    [0,1,2],[0,2,3],[0,3,4],[0,4,1],
+    [5,2,1],[5,3,2],[5,4,3],[5,1,4]
+  ];
+  return {verts, faces};
+}
+
+const sphere = buildSphere(70, 10, 18);
+const octa   = buildOcta(45);
+
+let sRotX=0, sRotY=0, sRotZ=0;
+let oRotX=0, oRotY=0, oRotZ=0;
+let mX=0, mY=0;
+
+addEventListener('mousemove', e=>{
+  mX = (e.clientX/innerWidth  - .5)*2;
+  mY = (e.clientY/innerHeight - .5)*2;
+});
+
+function proj(x,y,z, rx,ry, cx,cy){
+  /* rotate Y */
+  const cy1=Math.cos(ry), sy1=Math.sin(ry);
+  const x1 = x*cy1 - z*sy1;
+  const z1 = x*sy1 + z*cy1;
+  /* rotate X */
+  const cx1=Math.cos(rx), sx1=Math.sin(rx);
+  const y2 = y*cx1 - z1*sx1;
+  const z2 = y*sx1 + z1*cx1;
+  const fov=340, sc2=fov/(fov+z2+200);
+  return { px:cx+x1*sc2, py:cy+y2*sc2, sc:sc2, z:z2 };
+}
+
+let time = 0;
+
+function drawStarCanvas(){
+  /* pure black */
+  sctx.fillStyle = '#000';
+  sctx.fillRect(0,0,SW,SH);
+
+  /* stars */
+  STARS.forEach(s=>{
+    const tw = 0.5 + 0.5*Math.sin(time*s.tw*60 + s.tp);
+    const al = s.a * (0.55 + 0.45*tw);
+    const r  = s.big ? s.r*2.2 : s.r;
+    sctx.beginPath();
+    sctx.arc(s.x*SW, s.y*SH, r, 0, Math.PI*2);
+    sctx.fillStyle = `rgba(255,255,255,${al})`;
+    sctx.fill();
+    /* tiny cross on bigger stars */
+    if(s.big){
+      sctx.strokeStyle=`rgba(255,255,255,${al*0.4})`;
+      sctx.lineWidth=.4;
+      sctx.beginPath();
+      sctx.moveTo(s.x*SW-4, s.y*SH);
+      sctx.lineTo(s.x*SW+4, s.y*SH);
+      sctx.moveTo(s.x*SW, s.y*SH-4);
+      sctx.lineTo(s.x*SW, s.y*SH+4);
+      sctx.stroke();
     }
   });
-}, { threshold: 0.2 });
-skBoxes.forEach(box => skObs.observe(box));
 
-/* باقي الـ JS */
+  /* ── SPHERE — top right ── */
+  sRotY += .004 + mX*.001;
+  sRotX += .002 + mY*.0005;
+
+  const scx = SW*.78, scy = SH*.3;
+  const {v, rings, segs} = sphere;
+  const S = segs;
+
+  /* latitude edges */
+  for(let ri=0; ri<=rings; ri++){
+    for(let si=0; si<segs; si++){
+      const a=v[ri*(S+1)+si], b=v[ri*(S+1)+si+1];
+      if(!a||!b) continue;
+      const pa=proj(a.x,a.y,a.z,sRotX,sRotY,scx,scy);
+      const pb=proj(b.x,b.y,b.z,sRotX,sRotY,scx,scy);
+      const al=Math.max(0,(pa.sc+pb.sc)/2-.3)*.5;
+      sctx.beginPath();
+      sctx.strokeStyle=`rgba(180,0,0,${al})`;
+      sctx.lineWidth=.5;
+      sctx.moveTo(pa.px,pa.py);
+      sctx.lineTo(pb.px,pb.py);
+      sctx.stroke();
+    }
+  }
+  /* longitude edges */
+  for(let si=0; si<=segs; si++){
+    for(let ri=0; ri<rings; ri++){
+      const a=v[ri*(S+1)+si], b=v[(ri+1)*(S+1)+si];
+      if(!a||!b) continue;
+      const pa=proj(a.x,a.y,a.z,sRotX,sRotY,scx,scy);
+      const pb=proj(b.x,b.y,b.z,sRotX,sRotY,scx,scy);
+      const al=Math.max(0,(pa.sc+pb.sc)/2-.3)*.4;
+      sctx.beginPath();
+      sctx.strokeStyle=`rgba(139,0,0,${al})`;
+      sctx.lineWidth=.4;
+      sctx.moveTo(pa.px,pa.py);
+      sctx.lineTo(pb.px,pb.py);
+      sctx.stroke();
+    }
+  }
+
+  /* ── OCTAHEDRON — bottom left ── */
+  oRotY += .006 - mX*.0008;
+  oRotX += .003 + mY*.0006;
+  oRotZ += .002;
+
+  const ocx = SW*.2, ocy = SH*.72;
+  const {verts, faces} = octa;
+
+  faces.forEach(f=>{
+    const a=verts[f[0]], b=verts[f[1]], c=verts[f[2]];
+    const pa=proj(a.x,a.y,a.z,oRotX,oRotY,ocx,ocy);
+    const pb=proj(b.x,b.y,b.z,oRotX,oRotY,ocx,ocy);
+    const pc=proj(c.x,c.y,c.z,oRotX,oRotY,ocx,ocy);
+    /* backface cull */
+    const nx=(pb.px-pa.px)*(pc.py-pa.py)-(pb.py-pa.py)*(pc.px-pa.px);
+    if(nx<0) return;
+    const avgZ=(pa.z+pb.z+pc.z)/3;
+    const light=Math.max(.1,Math.min(.6,.35-avgZ/200));
+    sctx.beginPath();
+    sctx.moveTo(pa.px,pa.py);
+    sctx.lineTo(pb.px,pb.py);
+    sctx.lineTo(pc.px,pc.py);
+    sctx.closePath();
+    sctx.fillStyle=`rgba(80,0,0,${light*.4})`;
+    sctx.fill();
+    sctx.strokeStyle=`rgba(160,0,0,${light*.8})`;
+    sctx.lineWidth=.7;
+    sctx.stroke();
+  });
+
+  time += .016;
+  requestAnimationFrame(drawStarCanvas);
+}
+drawStarCanvas();
+
+/* ══════════════════════════════════
+   METEOR CANVAS — 3D rock
+══════════════════════════════════ */
+const mc   = document.getElementById('meteor-canvas');
+const mctx = mc.getContext('2d');
+let MW, MH;
+
+function resizeMeteor(){
+  MW = mc.width  = mc.offsetWidth;
+  MH = mc.height = mc.offsetHeight;
+}
+resizeMeteor();
+addEventListener('resize', resizeMeteor);
+
+/* Displaced sphere rock */
+function buildRock(radius, detail){
+  const pts=[];
+  const noise=(n)=>Math.sin(n*127.1)*Math.cos(n*311.7)*.5+.5;
+  for(let r=0; r<=detail; r++){
+    const phi=(r/detail)*Math.PI;
+    for(let s=0; s<=detail; s++){
+      const th=(s/detail)*Math.PI*2;
+      const n = .6 + .4*noise(r*31+s*17);
+      const rr=radius*n;
+      pts.push({
+        x:Math.sin(phi)*Math.cos(th)*rr,
+        y:Math.cos(phi)*rr,
+        z:Math.sin(phi)*Math.sin(th)*rr,
+        r,s
+      });
+    }
+  }
+  return {pts, detail};
+}
+
+const rock={data:buildRock(52,10), rx:0, ry:0};
+
+let mTimer=0;
+
+function projRock(x,y,z,rx,ry,cx,cy){
+  const cy1=Math.cos(ry),sy1=Math.sin(ry);
+  const x1=x*cy1-z*sy1, z1=x*sy1+z*cy1;
+  const cx1=Math.cos(rx),sx1=Math.sin(rx);
+  const y2=y*cx1-z1*sx1, z2=y*sx1+z1*cx1;
+  const fov=280,sc2=fov/(fov+z2+180);
+  return {px:cx+x1*sc2, py:cy+y2*sc2, sc:sc2, z:z2};
+}
+
+function easeOutExpo(t){ return t>=1?1:1-Math.pow(2,-10*t); }
+
+function drawMeteor(){
+  mctx.clearRect(0,0,MW,MH);
+
+  mTimer += .013;
+  const progress = Math.min(1, easeOutExpo(mTimer/1.5));
+  const cy = MH*.5 + (MH+200)*(1-progress);
+  const cx = MW*.5;
+
+  /* trail */
+  if(progress < .98){
+    const tl = 160*(1-progress)+50;
+    const tg = mctx.createLinearGradient(cx,cy+tl,cx,cy);
+    tg.addColorStop(0,'rgba(139,0,0,0)');
+    tg.addColorStop(.5,'rgba(139,0,0,0.15)');
+    tg.addColorStop(1,'rgba(200,80,80,0.4)');
+    mctx.beginPath();
+    mctx.moveTo(cx-3,cy+tl);
+    mctx.lineTo(cx+3,cy+tl);
+    mctx.lineTo(cx+2,cy);
+    mctx.lineTo(cx-2,cy);
+    mctx.closePath();
+    mctx.fillStyle=tg;
+    mctx.fill();
+    /* sparks */
+    for(let i=0;i<5;i++){
+      const sy=cy+Math.random()*tl*.8;
+      const sx=cx+(Math.random()-.5)*12;
+      mctx.beginPath();
+      mctx.arc(sx,sy,Math.random()*1.3,0,Math.PI*2);
+      mctx.fillStyle=`rgba(180,0,0,${Math.random()*.4})`;
+      mctx.fill();
+    }
+  }
+
+  /* rotate rock */
+  rock.ry += .014;
+  rock.rx += .009;
+
+  const {pts, detail:D} = rock.data;
+
+  /* faces */
+  const faces=[];
+  for(let r=0;r<D;r++){
+    for(let s=0;s<D;s++){
+      const i0=r*(D+1)+s, i1=r*(D+1)+s+1;
+      const i2=(r+1)*(D+1)+s+1, i3=(r+1)*(D+1)+s;
+      const p0=projRock(pts[i0].x,pts[i0].y,pts[i0].z,rock.rx,rock.ry,cx,cy);
+      const p1=projRock(pts[i1].x,pts[i1].y,pts[i1].z,rock.rx,rock.ry,cx,cy);
+      const p2=projRock(pts[i2].x,pts[i2].y,pts[i2].z,rock.rx,rock.ry,cx,cy);
+      const p3=projRock(pts[i3].x,pts[i3].y,pts[i3].z,rock.rx,rock.ry,cx,cy);
+      const ax=p1.px-p0.px,ay=p1.py-p0.py;
+      const bx=p3.px-p0.px,by=p3.py-p0.py;
+      if(ax*by-ay*bx<0) continue;
+      const avgZ=(p0.z+p1.z+p2.z+p3.z)/4;
+      faces.push({p0,p1,p2,p3,avgZ});
+    }
+  }
+  faces.sort((a,b)=>b.avgZ-a.avgZ);
+  faces.forEach(f=>{
+    const light=Math.max(.1,Math.min(1,.5-f.avgZ/260));
+    /* dark grey rock with slight warm tint */
+    const rv=Math.floor(30+light*70);
+    const gv=Math.floor(25+light*55);
+    const bv=Math.floor(25+light*55);
+    mctx.beginPath();
+    mctx.moveTo(f.p0.px,f.p0.py);
+    mctx.lineTo(f.p1.px,f.p1.py);
+    mctx.lineTo(f.p2.px,f.p2.py);
+    mctx.lineTo(f.p3.px,f.p3.py);
+    mctx.closePath();
+    mctx.fillStyle=`rgb(${rv},${gv},${bv})`;
+    mctx.fill();
+    mctx.strokeStyle=`rgba(100,0,0,${light*.3})`;
+    mctx.lineWidth=.35;
+    mctx.stroke();
+  });
+
+  /* red glow */
+  const glow=mctx.createRadialGradient(cx,cy,0,cx,cy,70);
+  glow.addColorStop(0,`rgba(139,0,0,${.14*(1-progress*.4)})`);
+  glow.addColorStop(1,'transparent');
+  mctx.fillStyle=glow;
+  mctx.beginPath();
+  mctx.arc(cx,cy,70,0,Math.PI*2);
+  mctx.fill();
+
+  /* landing shadow */
+  if(progress>.88){
+    const al=(progress-.88)/.12*.35;
+    const sg=mctx.createRadialGradient(cx,cy+52,0,cx,cy+52,90);
+    sg.addColorStop(0,`rgba(139,0,0,${al})`);
+    sg.addColorStop(1,'transparent');
+    mctx.fillStyle=sg;
+    mctx.beginPath();
+    mctx.ellipse(cx,cy+52,85,16,0,0,Math.PI*2);
+    mctx.fill();
+  }
+
+  requestAnimationFrame(drawMeteor);
+}
+drawMeteor();
+
+/* ══ HERO FADE ══ */
+addEventListener('scroll',()=>{
+  const fade=Math.max(0,1-scrollY/(innerHeight*.32));
+  document.getElementById('hero').style.opacity=fade;
+  const hint=document.querySelector('.scroll-hint');
+  if(hint) hint.style.opacity=Math.max(0,1-scrollY/180);
+},{passive:true});
+
+/* ══ TYPING ══ */
+const typeEl=document.getElementById('typeEl');
+const phrases=[
+  'Self-Taught Developer',
+  'Chess Player',
+  'Photographer',
+  'Freelancer · 2021 / 2022',
+  'Analyst · 2050'
+];
+let pi=0,ci=0,del=false;
+function tick(){
+  const cur=phrases[pi];
+  typeEl.textContent=del?cur.slice(0,ci-1):cur.slice(0,ci+1);
+  if(!del)ci++;else ci--;
+  if(!del&&ci===cur.length){del=true;setTimeout(tick,1800);return;}
+  if(del&&ci===0){del=false;pi=(pi+1)%phrases.length;}
+  setTimeout(tick,del?36:72);
+}
+setTimeout(tick,2800);
+
+/* ══ FIXED CARDS ══ */
+const fixedCards=document.getElementById('fixed-cards');
+const cardsGrid=fixedCards.querySelector('.grid');
+function tickCards(){
+  const trigger=document.getElementById('cards-trigger');
+  const rect=trigger.getBoundingClientRect();
+  const trigTop=rect.top+scrollY;
+  const trigH=rect.height;
+  const sy=scrollY, vh=innerHeight;
+  const start=trigTop-vh*.5;
+  const end=trigTop+trigH-vh*.3;
+  const range=end-start;
+  let progress=range>0?(sy-start)/range:0;
+  progress=Math.max(0,Math.min(1,progress));
+  const fadeIn=Math.min(1,Math.max(0,(sy-(start-vh*.2))/(vh*.2)));
+  const fadeOut=Math.min(1,Math.max(0,(end+vh*.3-sy)/(vh*.3)));
+  const isActive=sy>=start-vh*.2&&sy<=end+vh*.3;
+  const op=isActive?Math.min(fadeIn,fadeOut):0;
+  fixedCards.style.opacity=op;
+  fixedCards.style.pointerEvents=op>.1?'auto':'none';
+  const mob=innerWidth<660;
+  const pct=progress*130;
+  const mask=mob
+    ?`linear-gradient(to bottom,black ${pct}%,transparent ${pct+20}%)`
+    :`linear-gradient(to right,black ${pct}%,transparent ${pct+15}%)`;
+  cardsGrid.style.maskImage=mask;
+  cardsGrid.style.webkitMaskImage=mask;
+  requestAnimationFrame(tickCards);
+}
+requestAnimationFrame(tickCards);
+
+/* ══ ABOUT INTERSECTION ══ */
+const s3=document.getElementById('section-three-inner');
+const obs=new IntersectionObserver(([e])=>{
+  if(e.isIntersecting){s3.classList.add('visible');obs.unobserve(s3);}
+},{threshold:.15});
+obs.observe(s3);
+
 })();
 </script>
 </body>
