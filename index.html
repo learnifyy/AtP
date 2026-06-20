@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,54 +5,57 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Fellah Amine · 2050</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Space+Grotesk:wght@300;400;700&display=swap');
+
 *{margin:0;padding:0;box-sizing:border-box;}
+
 :root{
-  --g:#00ff88;
-  --g2:rgba(0,255,136,0.12);
-  --dark:#060608;
-  --card:rgba(8,14,10,0.55);
-  --txt:#ccc;
+  --white:#ffffff;
+  --off:#e8e8e8;
+  --mid:#888;
   --dim:#444;
+  --dark:#0a0a0a;
+  --card:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.08);
+  --border-h:rgba(255,255,255,0.18);
 }
+
 html{scroll-behavior:smooth;}
+
 body{
   background:var(--dark);
-  color:var(--txt);
-  font-family:'Courier New',monospace;
+  color:var(--off);
+  font-family:'Space Grotesk',sans-serif;
   overflow-x:hidden;
 }
-::-webkit-scrollbar{width:2px;}
-::-webkit-scrollbar-thumb{background:var(--g);}
 
-/* ── PARTICLES ── */
-#particle-canvas{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-}
+::-webkit-scrollbar{width:1px;}
+::-webkit-scrollbar-thumb{background:#333;}
 
 /* ── NAV ── */
 nav{
   position:fixed;
   top:0;left:0;right:0;
   z-index:100;
-  padding:20px 40px;
+  padding:24px 48px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:linear-gradient(to bottom,rgba(6,6,8,0.95),transparent);
+  background:linear-gradient(to bottom,rgba(10,10,10,0.98),transparent);
 }
 .nav-logo{
-  font-size:.72rem;
-  letter-spacing:.38em;
-  color:var(--g);
+  font-family:'Inter',sans-serif;
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.4em;
+  color:var(--white);
   text-transform:uppercase;
 }
 .nav-tag{
   font-size:.6rem;
-  letter-spacing:.28em;
+  letter-spacing:.3em;
   color:var(--dim);
+  font-weight:300;
 }
 
 /* ── HERO ── */
@@ -63,67 +65,126 @@ nav{
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:1;
   overflow:hidden;
-  transition:opacity .1s linear;
+  z-index:1;
 }
-#meteor-canvas{
+
+/* METEOR IMAGE */
+#meteor-wrap{
   position:absolute;
   inset:0;
-  width:100%;height:100%;
-  z-index:1;
-}
-.hero-content{
-  position:relative;
-  z-index:5;
-  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:2;
   pointer-events:none;
 }
+
+#meteor-img{
+  width:clamp(260px,45vw,520px);
+  height:auto;
+  opacity:0;
+  transform:translateY(110vh);
+  filter:brightness(.9) contrast(1.1);
+  will-change:transform,opacity;
+  border-radius:50%;
+  box-shadow:
+    0 0 80px rgba(255,255,255,0.06),
+    0 0 200px rgba(255,255,255,0.03);
+}
+
+#meteor-img.landed{
+  animation:meteorRise 1.8s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes meteorRise{
+  0%  {opacity:0;  transform:translateY(110vh) scale(.7);}
+  40% {opacity:1;}
+  80% {transform:translateY(0)     scale(1.04);}
+  100%{opacity:1;  transform:translateY(0)     scale(1);}
+}
+
+/* dust ring on land */
+#dust{
+  position:absolute;
+  bottom:calc(50% - clamp(130px,22.5vw,260px));
+  left:50%;
+  transform:translateX(-50%) scaleY(0);
+  width:clamp(300px,55vw,600px);
+  height:30px;
+  background:radial-gradient(ellipse,rgba(255,255,255,0.07) 0%,transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:3;
+}
+#dust.pop{
+  animation:dustPop .6s ease .9s forwards;
+}
+@keyframes dustPop{
+  0%{transform:translateX(-50%) scaleY(0);opacity:1;}
+  50%{transform:translateX(-50%) scaleY(1);opacity:.7;}
+  100%{transform:translateX(-50%) scaleY(1.4);opacity:0;}
+}
+
+/* Hero text — behind meteor */
+.hero-content{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  pointer-events:none;
+  opacity:0;
+  animation:fadeContent 1s ease 2s forwards;
+}
+@keyframes fadeContent{
+  to{opacity:1;}
+}
+
 .hero-eyebrow{
-  font-size:.6rem;
-  letter-spacing:.42em;
-  color:var(--g);
+  font-size:.58rem;
+  letter-spacing:.5em;
+  color:var(--dim);
   text-transform:uppercase;
-  opacity:.6;
-  margin-bottom:18px;
+  font-weight:300;
+  margin-bottom:22px;
 }
 .hero-name{
-  font-size:clamp(2.8rem,9vw,7rem);
+  font-family:'Inter',sans-serif;
+  font-size:clamp(3rem,10vw,8rem);
   font-weight:900;
-  color:#fff;
+  color:var(--white);
   text-transform:uppercase;
-  letter-spacing:.04em;
-  line-height:1;
-  text-shadow:0 0 80px rgba(0,255,136,.12);
+  letter-spacing:-.01em;
+  line-height:.95;
 }
 .hero-name span{
-  color:var(--g);
   display:block;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,0.5);
 }
 .hero-2050{
-  margin-top:14px;
-  font-size:clamp(.9rem,2.5vw,1.4rem);
-  color:var(--g);
-  letter-spacing:.65em;
-  opacity:.4;
+  margin-top:18px;
+  font-size:clamp(.8rem,2vw,1.1rem);
+  letter-spacing:.7em;
+  color:var(--dim);
+  font-weight:300;
 }
 .hero-role{
-  margin-top:24px;
+  margin-top:26px;
   font-size:.72rem;
-  color:var(--dim);
-  letter-spacing:.18em;
-  min-height:1.3em;
+  color:var(--mid);
+  letter-spacing:.2em;
+  font-weight:300;
+  min-height:1.4em;
 }
 .hero-role::after{
-  content:'|';
-  color:var(--g);
+  content:'_';
   animation:blink 1s step-end infinite;
 }
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
 
 .scroll-hint{
   position:absolute;
-  bottom:28px;
+  bottom:30px;
   left:50%;
   transform:translateX(-50%);
   z-index:5;
@@ -131,26 +192,26 @@ nav{
   flex-direction:column;
   align-items:center;
   gap:8px;
-  pointer-events:none;
+  opacity:0;
+  animation:fadeContent .8s ease 2.8s forwards;
 }
 .scroll-hint span{
-  font-size:.52rem;
-  letter-spacing:.32em;
-  color:var(--g);
-  opacity:.45;
+  font-size:.5rem;
+  letter-spacing:.4em;
+  color:var(--dim);
   text-transform:uppercase;
 }
 .scroll-line{
-  width:1px;height:42px;
-  background:linear-gradient(var(--g),transparent);
+  width:1px;height:44px;
+  background:linear-gradient(var(--mid),transparent);
   animation:sl 2s ease-in-out infinite;
 }
 @keyframes sl{
   0%,100%{opacity:.2;transform:scaleY(.4);}
-  50%{opacity:.8;transform:scaleY(1);}
+  50%{opacity:.7;transform:scaleY(1);}
 }
 
-/* ── CARDS TRIGGER SPACER ── */
+/* ── CARDS TRIGGER ── */
 #cards-trigger{
   position:relative;
   z-index:2;
@@ -167,192 +228,193 @@ nav{
   justify-content:center;
   pointer-events:none;
   opacity:0;
-  transition:none;
 }
 .grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:14px;
-  max-width:860px;
+  gap:12px;
+  max-width:820px;
   width:90%;
   padding:0 20px;
 }
-@media(max-width:700px){
+@media(max-width:680px){
   .grid{
     grid-template-columns:1fr;
-    gap:12px;
-    max-width:340px;
+    max-width:320px;
+    gap:10px;
   }
 }
 
 /* CARD */
 .card{
-  background:rgba(8,16,10,0.48);
-  border:1px solid rgba(0,255,136,0.13);
-  border-radius:16px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
   padding:26px 22px;
-  backdrop-filter:blur(32px);
-  -webkit-backdrop-filter:blur(32px);
+  backdrop-filter:blur(40px);
+  -webkit-backdrop-filter:blur(40px);
+  transition:border-color .3s,box-shadow .3s,transform .3s;
   position:relative;
   overflow:hidden;
-  transition:border-color .35s,box-shadow .35s,transform .35s;
 }
 .card::before{
   content:'';
   position:absolute;
-  top:0;left:15%;right:15%;
+  top:0;left:20%;right:20%;
   height:1px;
-  background:linear-gradient(to right,transparent,rgba(0,255,136,.25),transparent);
+  background:linear-gradient(to right,transparent,rgba(255,255,255,.12),transparent);
 }
 .card:hover{
-  border-color:rgba(0,255,136,.32);
-  box-shadow:0 18px 50px rgba(0,255,136,.1);
-  transform:translateY(-6px);
+  border-color:var(--border-h);
+  box-shadow:0 20px 50px rgba(0,0,0,.6);
+  transform:translateY(-5px);
 }
 .c-label{
-  font-size:.52rem;
-  letter-spacing:.3em;
-  color:var(--g);
+  font-size:.5rem;
+  letter-spacing:.32em;
+  color:var(--dim);
   text-transform:uppercase;
-  opacity:.6;
-  margin-bottom:12px;
-}
-.c-value{
-  font-size:2.6rem;
-  font-weight:900;
-  color:#fff;
-  line-height:1;
+  font-weight:400;
   margin-bottom:14px;
 }
-.c-value small{font-size:1.1rem;}
+.c-value{
+  font-family:'Inter',sans-serif;
+  font-size:2.8rem;
+  font-weight:900;
+  color:var(--white);
+  line-height:1;
+  margin-bottom:16px;
+}
+.c-value small{font-size:1.2rem;font-weight:300;}
 .c-list{
   list-style:none;
-  border-top:1px solid rgba(0,255,136,.07);
+  border-top:1px solid rgba(255,255,255,.05);
   padding-top:12px;
 }
 .c-list li{
   font-size:.6rem;
   color:var(--dim);
   padding:3px 0;
-  letter-spacing:.07em;
+  letter-spacing:.06em;
+  font-weight:300;
 }
 .c-foot{
   margin-top:12px;
-  font-size:.5rem;
-  letter-spacing:.22em;
-  color:rgba(0,255,136,.35);
+  font-size:.48rem;
+  letter-spacing:.25em;
+  color:rgba(255,255,255,.18);
   text-transform:uppercase;
 }
 
-/* ── SECTION 3 — ABOUT ── */
+/* ── ABOUT ── */
 #section-three{
   position:relative;
   z-index:2;
   background:var(--dark);
-  padding:100px 20px 80px;
+  padding:110px 20px 80px;
 }
 #section-three-inner{
-  max-width:660px;
+  max-width:600px;
   margin:0 auto;
   opacity:0;
-  transform:translateY(40px);
-  transition:opacity .8s ease,transform .8s ease;
+  transform:translateY(36px);
+  transition:opacity .9s ease,transform .9s ease;
 }
 #section-three-inner.visible{
   opacity:1;
   transform:translateY(0);
 }
 .sec-lbl{
-  font-size:.58rem;
-  letter-spacing:.4em;
-  color:var(--g);
+  font-size:.54rem;
+  letter-spacing:.45em;
+  color:var(--dim);
   text-transform:uppercase;
-  opacity:.55;
+  font-weight:300;
   margin-bottom:8px;
   text-align:center;
 }
 .sec-title{
-  font-size:clamp(1.3rem,3.5vw,2.2rem);
+  font-family:'Inter',sans-serif;
+  font-size:clamp(1.4rem,4vw,2.4rem);
   font-weight:900;
-  color:#fff;
+  color:var(--white);
   text-transform:uppercase;
-  letter-spacing:.07em;
+  letter-spacing:.05em;
   text-align:center;
-  margin-bottom:40px;
+  margin-bottom:36px;
 }
 .g-line{
-  width:36px;height:1px;
-  background:var(--g);
-  margin:10px auto 36px;
-  opacity:.3;
+  width:32px;height:1px;
+  background:var(--border-h);
+  margin:0 auto 36px;
 }
 .about-box{
-  background:rgba(8,16,10,0.48);
-  border:1px solid rgba(0,255,136,.1);
-  border-radius:16px;
-  padding:36px 32px;
-  backdrop-filter:blur(30px);
-  -webkit-backdrop-filter:blur(30px);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:34px 30px;
+  backdrop-filter:blur(40px);
+  -webkit-backdrop-filter:blur(40px);
 }
 .a-row{
   display:flex;
   justify-content:space-between;
   align-items:baseline;
-  padding:12px 0;
-  border-bottom:1px solid rgba(0,255,136,.055);
+  padding:13px 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
 }
 .a-row:last-child{border-bottom:none;}
 .a-key{
-  font-size:.56rem;
+  font-size:.54rem;
   letter-spacing:.22em;
-  color:var(--g);
+  color:var(--dim);
   text-transform:uppercase;
-  opacity:.55;
+  font-weight:300;
   min-width:120px;
 }
 .a-val{
   font-size:.76rem;
-  color:var(--txt);
+  color:var(--off);
   text-align:right;
-  line-height:1.5;
+  font-weight:300;
 }
-.a-val.accent{color:var(--g);}
+.a-val.accent{
+  color:var(--white);
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+}
 
 /* ── CONTACT ── */
 #contact{
   position:relative;
   z-index:2;
   background:var(--dark);
-  padding:20px 20px 80px;
+  padding:20px 20px 90px;
 }
-.contact-wrap{
-  max-width:480px;
-  margin:0 auto;
-  text-align:center;
-}
+.contact-wrap{max-width:460px;margin:0 auto;text-align:center;}
 .c-box{
   margin-top:36px;
-  background:rgba(8,16,10,0.48);
-  border:1px solid rgba(0,255,136,.1);
-  border-radius:16px;
-  padding:32px 28px;
-  backdrop-filter:blur(30px);
-  -webkit-backdrop-filter:blur(30px);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:30px 26px;
+  backdrop-filter:blur(40px);
+  -webkit-backdrop-filter:blur(40px);
 }
 .c-item{
   display:flex;
   align-items:center;
   gap:14px;
   padding:13px 0;
-  border-bottom:1px solid rgba(0,255,136,.055);
+  border-bottom:1px solid rgba(255,255,255,.04);
   text-decoration:none;
-  color:var(--txt);
+  color:var(--mid);
   transition:color .25s;
 }
 .c-item:last-child{border-bottom:none;}
-.c-item:hover{color:var(--g);}
-.c-ico{font-size:1rem;width:28px;text-align:center;opacity:.6;}
-.c-txt{font-size:.73rem;letter-spacing:.05em;}
+.c-item:hover{color:var(--white);}
+.c-ico{font-size:.95rem;width:26px;text-align:center;opacity:.5;}
+.c-txt{font-size:.72rem;letter-spacing:.05em;font-weight:300;}
 
 /* ── FOOTER ── */
 footer{
@@ -361,26 +423,24 @@ footer{
   background:var(--dark);
   padding:22px;
   text-align:center;
-  border-top:1px solid rgba(0,255,136,.05);
+  border-top:1px solid rgba(255,255,255,.04);
 }
 footer p{
-  font-size:.56rem;
-  letter-spacing:.22em;
+  font-size:.54rem;
+  letter-spacing:.25em;
   color:var(--dim);
+  font-weight:300;
 }
-footer span{color:var(--g);}
+footer span{color:var(--white);}
 
-/* ── RESPONSIVE ── */
 @media(max-width:500px){
-  nav{padding:16px 18px;}
-  .about-box{padding:24px 16px;}
-  .c-box{padding:24px 16px;}
+  nav{padding:16px 20px;}
+  .about-box{padding:22px 16px;}
+  .c-box{padding:22px 16px;}
 }
 </style>
 </head>
 <body>
-
-<canvas id="particle-canvas"></canvas>
 
 <!-- NAV -->
 <nav>
@@ -390,9 +450,17 @@ footer span{color:var(--g);}
 
 <!-- HERO -->
 <section id="hero">
-  <canvas id="meteor-canvas"></canvas>
+  <div id="meteor-wrap">
+    <img
+      id="meteor-img"
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Meteorite_Chelyabinsk.jpg/800px-Meteorite_Chelyabinsk.jpg"
+      alt="Meteorite"
+    />
+    <div id="dust"></div>
+  </div>
+
   <div class="hero-content">
-    <div class="hero-eyebrow">· Portfolio · 2026 ·</div>
+    <div class="hero-eyebrow">Portfolio · 2026</div>
     <div class="hero-name">
       Fellah
       <span>Amine</span>
@@ -400,6 +468,7 @@ footer span{color:var(--g);}
     <div class="hero-2050">2050</div>
     <div class="hero-role" id="typeEl"></div>
   </div>
+
   <div class="scroll-hint">
     <span>Scroll</span>
     <div class="scroll-line"></div>
@@ -415,9 +484,9 @@ footer span{color:var(--g);}
         <div class="c-label">Discipline</div>
         <div class="c-value">93<small>%</small></div>
         <ul class="c-list">
-          <li>Self-taught mindset</li>
-          <li>Behavioral analysis</li>
-          <li>Continuous growth</li>
+          <li>Chess</li>
+          <li>Photography</li>
+          <li>Self-taught dev</li>
         </ul>
         <div class="c-foot">Autonomous System</div>
       </div>
@@ -428,7 +497,7 @@ footer span{color:var(--g);}
         <ul class="c-list">
           <li>Tactical analysis</li>
           <li>Strategic vision</li>
-          <li>Pressure management</li>
+          <li>Competitive play</li>
         </ul>
         <div class="c-foot">Analytical Engine</div>
       </div>
@@ -437,7 +506,7 @@ footer span{color:var(--g);}
         <div class="c-label">Freelance</div>
         <div class="c-value">2<small>yr</small></div>
         <ul class="c-list">
-          <li>Fiverr · 2021 / 2022</li>
+          <li>Fiverr · 2021–2022</li>
           <li>Web development</li>
           <li>Client delivery</li>
         </ul>
@@ -469,11 +538,7 @@ footer span{color:var(--g);}
       </div>
       <div class="a-row">
         <span class="a-key">Chess</span>
-        <span class="a-val">Player — Tactical & Strategic</span>
-      </div>
-      <div class="a-row">
-        <span class="a-key">Freelance</span>
-        <span class="a-val">Fiverr · 2021 — 2022</span>
+        <span class="a-val">Player</span>
       </div>
       <div class="a-row">
         <span class="a-key">Photography</span>
@@ -481,7 +546,11 @@ footer span{color:var(--g);}
       </div>
       <div class="a-row">
         <span class="a-key">Development</span>
-        <span class="a-val">Self-Taught Developer</span>
+        <span class="a-val">Self-Taught</span>
+      </div>
+      <div class="a-row">
+        <span class="a-key">Freelance</span>
+        <span class="a-val">Fiverr · 2021 — 2022</span>
       </div>
       <div class="a-row">
         <span class="a-key">System ID</span>
@@ -522,296 +591,89 @@ footer span{color:var(--g);}
 <script>
 (function(){
 
-// ===================== PARTICLES =====================
-const pc = document.getElementById('particle-canvas');
-const pctx = pc.getContext('2d');
-let PW, PH, pts=[];
-
-function resizeParticles(){
-  PW = pc.width = innerWidth;
-  PH = pc.height = innerHeight;
-}
-resizeParticles();
-window.addEventListener('resize', resizeParticles);
-
-for(let i=0;i<55;i++){
-  pts.push({
-    x:Math.random()*innerWidth,
-    y:Math.random()*innerHeight,
-    vx:(Math.random()-.5)*.22,
-    vy:(Math.random()-.5)*.22,
-    r:Math.random()*.9+.35
-  });
-}
-
-function animateParticles(){
-  pctx.clearRect(0,0,PW,PH);
-  pts.forEach(p=>{
-    p.x+=p.vx; p.y+=p.vy;
-    if(p.x<0||p.x>PW) p.vx*=-1;
-    if(p.y<0||p.y>PH) p.vy*=-1;
-  });
-  for(let i=0;i<pts.length;i++){
-    for(let j=i+1;j<pts.length;j++){
-      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
-      const d=Math.hypot(dx,dy);
-      if(d<120){
-        pctx.beginPath();
-        pctx.strokeStyle=`rgba(0,255,136,${.055*(1-d/120)})`;
-        pctx.lineWidth=.5;
-        pctx.moveTo(pts[i].x,pts[i].y);
-        pctx.lineTo(pts[j].x,pts[j].y);
-        pctx.stroke();
-      }
-    }
-    pctx.beginPath();
-    pctx.arc(pts[i].x,pts[i].y,pts[i].r,0,Math.PI*2);
-    pctx.fillStyle='rgba(0,255,136,.2)';
-    pctx.fill();
-  }
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-// ===================== METEOR CANVAS =====================
-const mc = document.getElementById('meteor-canvas');
-const mctx = mc.getContext('2d');
-let MW, MH;
-
-function resizeMeteor(){
-  MW = mc.width = mc.offsetWidth;
-  MH = mc.height = mc.offsetHeight;
-}
-resizeMeteor();
-window.addEventListener('resize', resizeMeteor);
-
-// Meteor class — rises from bottom
-class Meteor {
-  constructor(){
-    this.reset();
-  }
-  reset(){
-    // Start from bottom, random X
-    this.x = MW * (.15 + Math.random() * .7);
-    this.y = MH + 60;
-    // Move upward with slight angle
-    const angle = -Math.PI/2 + (Math.random()-.5)*.55;
-    this.speed = 2.5 + Math.random() * 4;
-    this.vx = Math.cos(angle) * this.speed;
-    this.vy = Math.sin(angle) * this.speed;
-    this.len = 80 + Math.random() * 140;
-    this.width = .6 + Math.random() * 1.4;
-    this.alpha = .7 + Math.random() * .3;
-    this.life = 0;
-    this.maxLife = (this.len + MH) / this.speed;
-    // Rock chunks along trail
-    this.chunks = Array.from({length:4},()=>({
-      ox:(Math.random()-.5)*6,
-      oy:Math.random()*20+4,
-      r:1+Math.random()*2.5
-    }));
-  }
-  update(){
-    this.x += this.vx;
-    this.y += this.vy;
-    this.life++;
-    if(this.y < -this.len - 60) this.reset();
-  }
-  draw(ctx){
-    const t = this.life / this.maxLife;
-    const fade = Math.min(1, Math.min(t*4, (1-t)*3));
-    const al = this.alpha * fade;
-
-    // Trail gradient
-    const tx = this.x - this.vx / this.speed * this.len;
-    const ty = this.y - this.vy / this.speed * this.len;
-
-    const grad = ctx.createLinearGradient(tx, ty, this.x, this.y);
-    grad.addColorStop(0, `rgba(0,255,136,0)`);
-    grad.addColorStop(.4, `rgba(0,255,136,${al*.3})`);
-    grad.addColorStop(.75, `rgba(180,255,220,${al*.7})`);
-    grad.addColorStop(1, `rgba(255,255,255,${al})`);
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(tx, ty);
-    ctx.lineTo(this.x, this.y);
-    ctx.strokeStyle = grad;
-    ctx.lineWidth = this.width;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-
-    // Glow halo at head
-    const glow = ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,12);
-    glow.addColorStop(0, `rgba(200,255,220,${al*.9})`);
-    glow.addColorStop(.4, `rgba(0,255,136,${al*.4})`);
-    glow.addColorStop(1, 'transparent');
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, 12, 0, Math.PI*2);
-    ctx.fillStyle = glow;
-    ctx.fill();
-
-    // Rock core at head
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, 2.2, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(255,255,240,${al})`;
-    ctx.fill();
-
-    // Debris chunks along trail
-    this.chunks.forEach(ch=>{
-      const cx2 = this.x - this.vx/this.speed*(ch.oy+10) + ch.ox;
-      const cy2 = this.y - this.vy/this.speed*(ch.oy+10);
-      ctx.beginPath();
-      ctx.arc(cx2, cy2, ch.r, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(0,255,100,${al*.35})`;
-      ctx.fill();
-    });
-
-    // Spark particles around head
-    for(let i=0;i<3;i++){
-      const sx = this.x + (Math.random()-.5)*18;
-      const sy = this.y + (Math.random()-.5)*18;
-      ctx.beginPath();
-      ctx.arc(sx, sy, Math.random()*1.2, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(0,255,136,${al*Math.random()*.5})`;
-      ctx.fill();
-    }
-
-    ctx.restore();
-  }
-}
-
-// Create meteors
-const meteors = Array.from({length:10}, ()=>{
-  const m = new Meteor();
-  // Stagger initial positions
-  m.y = MH - Math.random()*MH*1.5;
-  m.life = Math.floor(Math.random()*m.maxLife*.6);
-  return m;
+// ── METEOR RISE ON LOAD ──
+window.addEventListener('load', function(){
+  const img  = document.getElementById('meteor-img');
+  const dust = document.getElementById('dust');
+  setTimeout(function(){
+    img.classList.add('landed');
+    dust.classList.add('pop');
+  }, 300);
 });
 
-// Ground glow at bottom center
-function drawGroundGlow(){
-  const cx = MW/2;
-  const g = mctx.createRadialGradient(cx, MH, 0, cx, MH, MW*.5);
-  g.addColorStop(0, 'rgba(0,180,70,.18)');
-  g.addColorStop(.4, 'rgba(0,100,40,.07)');
-  g.addColorStop(1, 'transparent');
-  mctx.fillStyle = g;
-  mctx.fillRect(0, 0, MW, MH);
-}
-
-function animateMeteors(){
-  mctx.clearRect(0, 0, MW, MH);
-
-  // Dark background
-  mctx.fillStyle = 'rgba(6,6,8,1)';
-  mctx.fillRect(0, 0, MW, MH);
-
-  // Stars
-  if(!animateMeteors._stars){
-    animateMeteors._stars = Array.from({length:120},()=>({
-      x:Math.random()*2000,
-      y:Math.random()*2000,
-      r:Math.random()*.8+.1,
-      a:Math.random()*.6+.1
-    }));
-  }
-  animateMeteors._stars.forEach(s=>{
-    mctx.beginPath();
-    mctx.arc(s.x%MW, s.y%MH, s.r, 0, Math.PI*2);
-    mctx.fillStyle=`rgba(255,255,255,${s.a})`;
-    mctx.fill();
-  });
-
-  drawGroundGlow();
-
-  meteors.forEach(m=>{ m.update(); m.draw(mctx); });
-
-  requestAnimationFrame(animateMeteors);
-}
-animateMeteors();
-
-// ===================== HERO FADE =====================
-function updateHeroOpacity(){
-  const fade = Math.max(0, 1 - window.scrollY/(window.innerHeight*.3));
-  document.getElementById('hero').style.opacity = fade;
-}
-window.addEventListener('scroll', updateHeroOpacity, {passive:true});
-
-// ===================== TYPING =====================
+// ── TYPING ──
 const typeEl = document.getElementById('typeEl');
 const phrases = [
   'Self-Taught Developer',
-  'Chess Player & Analyst',
-  'Photographer · Creator',
+  'Chess Player',
+  'Photographer',
   'Freelancer · 2021 / 2022',
   'Behavioral Analyst · 2050'
 ];
-let pi=0,ci=0,del=false;
+let pi=0, ci=0, del=false;
 function tick(){
-  const cur=phrases[pi];
+  const cur = phrases[pi];
   typeEl.textContent = del ? cur.slice(0,ci-1) : cur.slice(0,ci+1);
   if(!del) ci++; else ci--;
   if(!del && ci===cur.length){ del=true; setTimeout(tick,1800); return; }
   if(del && ci===0){ del=false; pi=(pi+1)%phrases.length; }
-  setTimeout(tick, del?36:72);
+  setTimeout(tick, del ? 36 : 72);
 }
-setTimeout(tick, 1200);
+setTimeout(tick, 2400);
 
-// ===================== FIXED CARDS =====================
-const fixedCards = document.getElementById('fixed-cards');
-const cardsGrid = fixedCards.querySelector('.grid');
+// ── HERO FADE ON SCROLL ──
+window.addEventListener('scroll', function(){
+  const fade = Math.max(0, 1 - scrollY/(innerHeight*.32));
+  document.getElementById('hero').style.opacity = fade;
+  const hint = document.querySelector('.scroll-hint');
+  if(hint) hint.style.opacity = Math.max(0, 1 - scrollY/180);
+}, {passive:true});
+
+// ── FIXED CARDS ──
+const fixedCards  = document.getElementById('fixed-cards');
+const cardsGrid   = fixedCards.querySelector('.grid');
 
 function tickCards(){
   const trigger = document.getElementById('cards-trigger');
-  const rect = trigger.getBoundingClientRect();
-  const triggerTop = rect.top + window.scrollY;
-  const triggerHeight = rect.height;
-  const scrollY = window.scrollY;
-  const vh = window.innerHeight;
+  const rect    = trigger.getBoundingClientRect();
+  const trigTop = rect.top + scrollY;
+  const trigH   = rect.height;
+  const sy      = scrollY;
+  const vh      = innerHeight;
 
-  const start = triggerTop - vh*.5;
-  const end = triggerTop + triggerHeight - vh*.3;
+  const start = trigTop - vh*.5;
+  const end   = trigTop + trigH - vh*.3;
   const range = end - start;
 
-  let progress = range>0 ? (scrollY-start)/range : 0;
-  progress = Math.max(0,Math.min(1,progress));
+  let progress = range>0 ? (sy-start)/range : 0;
+  progress = Math.max(0, Math.min(1, progress));
 
-  const isActive = scrollY>=start-vh*.2 && scrollY<=end+vh*.3;
-  const fadeIn = Math.min(1,Math.max(0,(scrollY-(start-vh*.2))/(vh*.2)));
-  const fadeOut = Math.min(1,Math.max(0,(end+vh*.3-scrollY)/(vh*.3)));
-  const op = isActive ? Math.min(fadeIn,fadeOut) : 0;
+  const fadeIn  = Math.min(1, Math.max(0, (sy-(start-vh*.2))/(vh*.2)));
+  const fadeOut = Math.min(1, Math.max(0, (end+vh*.3-sy)/(vh*.3)));
+  const isActive = sy>= start-vh*.2 && sy<=end+vh*.3;
+  const op = isActive ? Math.min(fadeIn, fadeOut) : 0;
 
   fixedCards.style.opacity = op;
   fixedCards.style.pointerEvents = op>.1 ? 'auto' : 'none';
 
-  const isMobile = window.innerWidth<768;
-  const revealPct = progress*130;
-  if(isMobile){
-    cardsGrid.style.maskImage=`linear-gradient(to bottom,black ${revealPct}%,transparent ${revealPct+20}%)`;
-    cardsGrid.style.webkitMaskImage=`linear-gradient(to bottom,black ${revealPct}%,transparent ${revealPct+20}%)`;
-  } else {
-    cardsGrid.style.maskImage=`linear-gradient(to right,black ${revealPct}%,transparent ${revealPct+15}%)`;
-    cardsGrid.style.webkitMaskImage=`linear-gradient(to right,black ${revealPct}%,transparent ${revealPct+15}%)`;
-  }
+  const mob = innerWidth < 680;
+  const pct = progress * 130;
+  const mask = mob
+    ? `linear-gradient(to bottom,black ${pct}%,transparent ${pct+20}%)`
+    : `linear-gradient(to right,black ${pct}%,transparent ${pct+15}%)`;
+  cardsGrid.style.maskImage = mask;
+  cardsGrid.style.webkitMaskImage = mask;
 
   requestAnimationFrame(tickCards);
 }
 requestAnimationFrame(tickCards);
 
-// ===================== SECTION 3 INTERSECTION =====================
-const s3 = document.getElementById('section-three-inner');
+// ── ABOUT INTERSECTION ──
+const s3  = document.getElementById('section-three-inner');
 const obs = new IntersectionObserver(([e])=>{
   if(e.isIntersecting){ s3.classList.add('visible'); obs.unobserve(s3); }
-},{threshold:.15});
+}, {threshold:.15});
 obs.observe(s3);
-
-// ===================== SCROLL HINT FADE =====================
-window.addEventListener('scroll',()=>{
-  const hint = document.querySelector('.scroll-hint');
-  if(hint) hint.style.opacity = Math.max(0,1-scrollY/200)*.45;
-},{passive:true});
 
 })();
 </script>
