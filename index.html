@@ -1,680 +1,645 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Fellah Amine · 2050</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Space+Grotesk:wght@300;400;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fellah Amine · 2050</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+        :root {
+            --bg: #0a0a0a;
+            --white: #ffffff;
+            --gray: #666666;
+            --light: #cccccc;
+            --border: #222222;
+        }
 
-:root{
-  --white:#ffffff;
-  --off:#e8e8e8;
-  --mid:#888;
-  --dim:#444;
-  --dark:#0a0a0a;
-  --card:rgba(255,255,255,0.04);
-  --border:rgba(255,255,255,0.08);
-  --border-h:rgba(255,255,255,0.18);
-}
+        html { scroll-behavior: smooth; }
 
-html{scroll-behavior:smooth;}
+        body {
+            background: var(--bg);
+            color: var(--light);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
 
-body{
-  background:var(--dark);
-  color:var(--off);
-  font-family:'Space Grotesk',sans-serif;
-  overflow-x:hidden;
-}
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-thumb { background: var(--white); }
 
-::-webkit-scrollbar{width:1px;}
-::-webkit-scrollbar-thumb{background:#333;}
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 50;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+        }
 
-/* ── NAV ── */
-nav{
-  position:fixed;
-  top:0;left:0;right:0;
-  z-index:100;
-  padding:24px 48px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:linear-gradient(to bottom,rgba(10,10,10,0.98),transparent);
-}
-.nav-logo{
-  font-family:'Inter',sans-serif;
-  font-size:.7rem;
-  font-weight:700;
-  letter-spacing:.4em;
-  color:var(--white);
-  text-transform:uppercase;
-}
-.nav-tag{
-  font-size:.6rem;
-  letter-spacing:.3em;
-  color:var(--dim);
-  font-weight:300;
-}
+        .logo {
+            font-size: .8rem;
+            letter-spacing: .3em;
+            color: var(--white);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
 
-/* ── HERO ── */
-#hero{
-  position:relative;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  z-index:1;
-}
+        .nav-r {
+            font-size: .7rem;
+            letter-spacing: .2em;
+            color: var(--gray);
+            font-weight: 300;
+        }
 
-/* METEOR IMAGE */
-#meteor-wrap{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:2;
-  pointer-events:none;
-}
+        /* ── HERO ── */
+        #hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            overflow: hidden;
+            transition: opacity 0.3s ease;
+        }
 
-#meteor-img{
-  width:clamp(260px,45vw,520px);
-  height:auto;
-  opacity:0;
-  transform:translateY(110vh);
-  filter:brightness(.9) contrast(1.1);
-  will-change:transform,opacity;
-  border-radius:50%;
-  box-shadow:
-    0 0 80px rgba(255,255,255,0.06),
-    0 0 200px rgba(255,255,255,0.03);
-}
+        .hero-content {
+            position: relative;
+            z-index: 5;
+            text-align: center;
+        }
 
-#meteor-img.landed{
-  animation:meteorRise 1.8s cubic-bezier(.16,1,.3,1) forwards;
-}
+        .hero-tag {
+            font-size: .65rem;
+            letter-spacing: .5em;
+            color: var(--gray);
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
 
-@keyframes meteorRise{
-  0%  {opacity:0;  transform:translateY(110vh) scale(.7);}
-  40% {opacity:1;}
-  80% {transform:translateY(0)     scale(1.04);}
-  100%{opacity:1;  transform:translateY(0)     scale(1);}
-}
+        .hero-name {
+            font-size: clamp(3rem,9vw,7rem);
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -.02em;
+            line-height: .95;
+        }
 
-/* dust ring on land */
-#dust{
-  position:absolute;
-  bottom:calc(50% - clamp(130px,22.5vw,260px));
-  left:50%;
-  transform:translateX(-50%) scaleY(0);
-  width:clamp(300px,55vw,600px);
-  height:30px;
-  background:radial-gradient(ellipse,rgba(255,255,255,0.07) 0%,transparent 70%);
-  border-radius:50%;
-  pointer-events:none;
-  z-index:3;
-}
-#dust.pop{
-  animation:dustPop .6s ease .9s forwards;
-}
-@keyframes dustPop{
-  0%{transform:translateX(-50%) scaleY(0);opacity:1;}
-  50%{transform:translateX(-50%) scaleY(1);opacity:.7;}
-  100%{transform:translateX(-50%) scaleY(1.4);opacity:0;}
-}
+        .hero-year {
+            margin-top: 18px;
+            font-size: clamp(1rem,2.5vw,1.5rem);
+            color: var(--white);
+            letter-spacing: .8em;
+            font-weight: 300;
+        }
 
-/* Hero text — behind meteor */
-.hero-content{
-  position:relative;
-  z-index:1;
-  text-align:center;
-  pointer-events:none;
-  opacity:0;
-  animation:fadeContent 1s ease 2s forwards;
-}
-@keyframes fadeContent{
-  to{opacity:1;}
-}
+        .scroll-hint {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
 
-.hero-eyebrow{
-  font-size:.58rem;
-  letter-spacing:.5em;
-  color:var(--dim);
-  text-transform:uppercase;
-  font-weight:300;
-  margin-bottom:22px;
-}
-.hero-name{
-  font-family:'Inter',sans-serif;
-  font-size:clamp(3rem,10vw,8rem);
-  font-weight:900;
-  color:var(--white);
-  text-transform:uppercase;
-  letter-spacing:-.01em;
-  line-height:.95;
-}
-.hero-name span{
-  display:block;
-  color:transparent;
-  -webkit-text-stroke:1px rgba(255,255,255,0.5);
-}
-.hero-2050{
-  margin-top:18px;
-  font-size:clamp(.8rem,2vw,1.1rem);
-  letter-spacing:.7em;
-  color:var(--dim);
-  font-weight:300;
-}
-.hero-role{
-  margin-top:26px;
-  font-size:.72rem;
-  color:var(--mid);
-  letter-spacing:.2em;
-  font-weight:300;
-  min-height:1.4em;
-}
-.hero-role::after{
-  content:'_';
-  animation:blink 1s step-end infinite;
-}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+        .scroll-hint span {
+            font-size: .6rem;
+            letter-spacing: .35em;
+            color: var(--gray);
+            text-transform: uppercase;
+            font-weight: 300;
+        }
 
-.scroll-hint{
-  position:absolute;
-  bottom:30px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:5;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:8px;
-  opacity:0;
-  animation:fadeContent .8s ease 2.8s forwards;
-}
-.scroll-hint span{
-  font-size:.5rem;
-  letter-spacing:.4em;
-  color:var(--dim);
-  text-transform:uppercase;
-}
-.scroll-line{
-  width:1px;height:44px;
-  background:linear-gradient(var(--mid),transparent);
-  animation:sl 2s ease-in-out infinite;
-}
-@keyframes sl{
-  0%,100%{opacity:.2;transform:scaleY(.4);}
-  50%{opacity:.7;transform:scaleY(1);}
-}
+        .scroll-line {
+            width: 1px;
+            height: 45px;
+            background: linear-gradient(var(--white), transparent);
+            animation: scLine 2.5s ease-in-out infinite;
+        }
 
-/* ── CARDS TRIGGER ── */
-#cards-trigger{
-  position:relative;
-  z-index:2;
-  height:180vh;
-}
+        @keyframes scLine {
+            0%,100% { opacity:.2; transform:scaleY(.4); }
+            50% { opacity:1; transform:scaleY(1); }
+        }
 
-/* ── FIXED CARDS ── */
-#fixed-cards{
-  position:fixed;
-  inset:0;
-  z-index:10;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  pointer-events:none;
-  opacity:0;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  max-width:820px;
-  width:90%;
-  padding:0 20px;
-}
-@media(max-width:680px){
-  .grid{
-    grid-template-columns:1fr;
-    max-width:320px;
-    gap:10px;
-  }
-}
+        /* ── METEOR IMAGE ── */
+        #meteor-img {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            left: 50%;
+            bottom: -500px;
+            transform: translateX(-50%);
+            z-index: 3;
+            opacity: 0;
+            transition: bottom 1.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 1.2s ease;
+            pointer-events: none;
+        }
 
-/* CARD */
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:26px 22px;
-  backdrop-filter:blur(40px);
-  -webkit-backdrop-filter:blur(40px);
-  transition:border-color .3s,box-shadow .3s,transform .3s;
-  position:relative;
-  overflow:hidden;
-}
-.card::before{
-  content:'';
-  position:absolute;
-  top:0;left:20%;right:20%;
-  height:1px;
-  background:linear-gradient(to right,transparent,rgba(255,255,255,.12),transparent);
-}
-.card:hover{
-  border-color:var(--border-h);
-  box-shadow:0 20px 50px rgba(0,0,0,.6);
-  transform:translateY(-5px);
-}
-.c-label{
-  font-size:.5rem;
-  letter-spacing:.32em;
-  color:var(--dim);
-  text-transform:uppercase;
-  font-weight:400;
-  margin-bottom:14px;
-}
-.c-value{
-  font-family:'Inter',sans-serif;
-  font-size:2.8rem;
-  font-weight:900;
-  color:var(--white);
-  line-height:1;
-  margin-bottom:16px;
-}
-.c-value small{font-size:1.2rem;font-weight:300;}
-.c-list{
-  list-style:none;
-  border-top:1px solid rgba(255,255,255,.05);
-  padding-top:12px;
-}
-.c-list li{
-  font-size:.6rem;
-  color:var(--dim);
-  padding:3px 0;
-  letter-spacing:.06em;
-  font-weight:300;
-}
-.c-foot{
-  margin-top:12px;
-  font-size:.48rem;
-  letter-spacing:.25em;
-  color:rgba(255,255,255,.18);
-  text-transform:uppercase;
-}
+        #meteor-img.visible {
+            bottom: 50%;
+            transform: translate(-50%, 50%);
+            opacity: 0.85;
+        }
 
-/* ── ABOUT ── */
-#section-three{
-  position:relative;
-  z-index:2;
-  background:var(--dark);
-  padding:110px 20px 80px;
-}
-#section-three-inner{
-  max-width:600px;
-  margin:0 auto;
-  opacity:0;
-  transform:translateY(36px);
-  transition:opacity .9s ease,transform .9s ease;
-}
-#section-three-inner.visible{
-  opacity:1;
-  transform:translateY(0);
-}
-.sec-lbl{
-  font-size:.54rem;
-  letter-spacing:.45em;
-  color:var(--dim);
-  text-transform:uppercase;
-  font-weight:300;
-  margin-bottom:8px;
-  text-align:center;
-}
-.sec-title{
-  font-family:'Inter',sans-serif;
-  font-size:clamp(1.4rem,4vw,2.4rem);
-  font-weight:900;
-  color:var(--white);
-  text-transform:uppercase;
-  letter-spacing:.05em;
-  text-align:center;
-  margin-bottom:36px;
-}
-.g-line{
-  width:32px;height:1px;
-  background:var(--border-h);
-  margin:0 auto 36px;
-}
-.about-box{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:34px 30px;
-  backdrop-filter:blur(40px);
-  -webkit-backdrop-filter:blur(40px);
-}
-.a-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:baseline;
-  padding:13px 0;
-  border-bottom:1px solid rgba(255,255,255,.04);
-}
-.a-row:last-child{border-bottom:none;}
-.a-key{
-  font-size:.54rem;
-  letter-spacing:.22em;
-  color:var(--dim);
-  text-transform:uppercase;
-  font-weight:300;
-  min-width:120px;
-}
-.a-val{
-  font-size:.76rem;
-  color:var(--off);
-  text-align:right;
-  font-weight:300;
-}
-.a-val.accent{
-  color:var(--white);
-  font-weight:700;
-  font-family:'Inter',sans-serif;
-}
+        /* ── TRIGGER SECTION ── */
+        #cards-trigger {
+            position: relative;
+            height: 300vh;
+            z-index: 1;
+        }
 
-/* ── CONTACT ── */
-#contact{
-  position:relative;
-  z-index:2;
-  background:var(--dark);
-  padding:20px 20px 90px;
-}
-.contact-wrap{max-width:460px;margin:0 auto;text-align:center;}
-.c-box{
-  margin-top:36px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:30px 26px;
-  backdrop-filter:blur(40px);
-  -webkit-backdrop-filter:blur(40px);
-}
-.c-item{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:13px 0;
-  border-bottom:1px solid rgba(255,255,255,.04);
-  text-decoration:none;
-  color:var(--mid);
-  transition:color .25s;
-}
-.c-item:last-child{border-bottom:none;}
-.c-item:hover{color:var(--white);}
-.c-ico{font-size:.95rem;width:26px;text-align:center;opacity:.5;}
-.c-txt{font-size:.72rem;letter-spacing:.05em;font-weight:300;}
+        /* ── FIXED CARDS ── */
+        #fixed-cards {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+        }
 
-/* ── FOOTER ── */
-footer{
-  position:relative;
-  z-index:2;
-  background:var(--dark);
-  padding:22px;
-  text-align:center;
-  border-top:1px solid rgba(255,255,255,.04);
-}
-footer p{
-  font-size:.54rem;
-  letter-spacing:.25em;
-  color:var(--dim);
-  font-weight:300;
-}
-footer span{color:var(--white);}
+        #fixed-cards .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1100px;
+            padding: 40px;
+        }
 
-@media(max-width:500px){
-  nav{padding:16px 20px;}
-  .about-box{padding:22px 16px;}
-  .c-box{padding:22px 16px;}
-}
-</style>
+        @media(max-width: 767px) {
+            #fixed-cards .grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                padding: 20px;
+            }
+        }
+
+        .stat-card {
+            background: rgba(20,20,20,0.8);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 30px 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: border-color .3s, transform .3s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--white);
+            transform: translateY(-5px);
+        }
+
+        .s-lbl {
+            font-size: .6rem;
+            letter-spacing: .3em;
+            color: var(--gray);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        .s-val {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .s-val small { font-size: 1.6rem; }
+
+        .s-list {
+            list-style: none;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+        }
+
+        .s-list li {
+            font-size: .7rem;
+            color: var(--light);
+            padding: 4px 0;
+            font-weight: 300;
+        }
+
+        .s-list li:before {
+            content: '—';
+            margin-right: 8px;
+            color: var(--gray);
+        }
+
+        /* ── ABOUT ── */
+        #about {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 100px 40px;
+        }
+
+        .sec-head {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .sec-title {
+            font-size: clamp(1.8rem,4vw,3rem);
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -.01em;
+        }
+
+        .about-box {
+            background: rgba(20,20,20,0.6);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 50px 40px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .a-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .a-row:last-child { border-bottom: none; }
+
+        .a-key {
+            font-size: .65rem;
+            letter-spacing: .25em;
+            color: var(--gray);
+            text-transform: uppercase;
+            font-weight: 400;
+            min-width: 120px;
+        }
+
+        .a-val {
+            font-size: .85rem;
+            color: var(--white);
+            text-align: right;
+            font-weight: 300;
+        }
+
+        /* ── HOBBIES ── */
+        #hobbies {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 40px 100px;
+        }
+
+        .hobbies-list {
+            background: rgba(20,20,20,0.6);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .hobbies-list ul {
+            list-style: none;
+        }
+
+        .hobbies-list li {
+            font-size: .9rem;
+            color: var(--light);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-weight: 300;
+        }
+
+        .hobbies-list li:last-child { border-bottom: none; }
+
+        .hobbies-list li:before {
+            content: '◆';
+            margin-right: 12px;
+            color: var(--white);
+            font-size: .7rem;
+        }
+
+        /* ── CONTACT ── */
+        #contact {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 50px 40px 120px;
+            text-align: center;
+        }
+
+        .c-box {
+            background: rgba(20,20,20,0.6);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 40px 35px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            margin-top: 40px;
+        }
+
+        .c-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--light);
+            transition: color .25s;
+            text-align: left;
+        }
+
+        .c-item:last-child { border-bottom: none; }
+        .c-item:hover { color: var(--white); }
+
+        .c-ico {
+            font-size: 1.1rem;
+            width: 35px;
+            text-align: center;
+        }
+
+        .c-txt {
+            font-size: .8rem;
+            font-weight: 300;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative;
+            z-index: 2;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        footer p {
+            font-size: .65rem;
+            letter-spacing: .25em;
+            color: var(--gray);
+            font-weight: 300;
+        }
+
+        footer span { color: var(--white); }
+
+        @media(max-width:600px) {
+            nav { padding: 20px 25px; }
+            #meteor-img { width: 280px; height: 280px; }
+            .about-box, .hobbies-list, .c-box { padding: 30px 25px; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ══════════ NAV ══════════ -->
 <nav>
-  <div class="nav-logo">F · Amine</div>
-  <div class="nav-tag">2050 · Algeria</div>
+    <div class="logo">Fellah Amine</div>
+    <div class="nav-r">2050</div>
 </nav>
 
-<!-- HERO -->
+<!-- ══════════ HERO ══════════ -->
 <section id="hero">
-  <div id="meteor-wrap">
-    <img
-      id="meteor-img"
-      src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Meteorite_Chelyabinsk.jpg/800px-Meteorite_Chelyabinsk.jpg"
-      alt="Meteorite"
-    />
-    <div id="dust"></div>
-  </div>
-
-  <div class="hero-content">
-    <div class="hero-eyebrow">Portfolio · 2026</div>
-    <div class="hero-name">
-      Fellah
-      <span>Amine</span>
+    <div class="hero-content">
+        <div class="hero-tag">Portfolio · 2026</div>
+        <div class="hero-name">FELLAH AMINE</div>
+        <div class="hero-year">2050</div>
     </div>
-    <div class="hero-2050">2050</div>
-    <div class="hero-role" id="typeEl"></div>
-  </div>
-
-  <div class="scroll-hint">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
+    <div class="scroll-hint">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+    </div>
 </section>
 
-<!-- CARDS TRIGGER -->
-<div id="cards-trigger">
-  <div id="fixed-cards">
+<!-- ══════════ METEOR IMAGE ══════════ -->
+<img id="meteor-img" src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&q=80" alt="Meteor">
+
+<!-- ══════════ CARDS TRIGGER ══════════ -->
+<div id="cards-trigger"></div>
+
+<!-- ══════════ FIXED CARDS ══════════ -->
+<div id="fixed-cards">
     <div class="grid">
+        <div class="stat-card">
+            <div class="s-lbl">Chess</div>
+            <div class="s-val">♟</div>
+            <ul class="s-list">
+                <li>Tactical Player</li>
+                <li>Strategic Thinking</li>
+            </ul>
+        </div>
 
-      <div class="card">
-        <div class="c-label">Discipline</div>
-        <div class="c-value">93<small>%</small></div>
-        <ul class="c-list">
-          <li>Chess</li>
-          <li>Photography</li>
-          <li>Self-taught dev</li>
-        </ul>
-        <div class="c-foot">Autonomous System</div>
-      </div>
+        <div class="stat-card">
+            <div class="s-lbl">Photography</div>
+            <div class="s-val">📷</div>
+            <ul class="s-list">
+                <li>Visual Creator</li>
+                <li>Professional Lens</li>
+            </ul>
+        </div>
 
-      <div class="card">
-        <div class="c-label">Chess</div>
-        <div class="c-value">♟</div>
-        <ul class="c-list">
-          <li>Tactical analysis</li>
-          <li>Strategic vision</li>
-          <li>Competitive play</li>
-        </ul>
-        <div class="c-foot">Analytical Engine</div>
-      </div>
+        <div class="stat-card">
+            <div class="s-lbl">Development</div>
+            <div class="s-val">{"}"}</div>
+            <ul class="s-list">
+                <li>Self-Taught</li>
+                <li>Web Developer</li>
+            </ul>
+        </div>
 
-      <div class="card">
-        <div class="c-label">Freelance</div>
-        <div class="c-value">2<small>yr</small></div>
-        <ul class="c-list">
-          <li>Fiverr · 2021–2022</li>
-          <li>Web development</li>
-          <li>Client delivery</li>
-        </ul>
-        <div class="c-foot">Freelance Protocol</div>
-      </div>
+        <div class="stat-card">
+            <div class="s-lbl">Freelance</div>
+            <div class="s-val">2<small>yr</small></div>
+            <ul class="s-list">
+                <li>Fiverr 2021-2022</li>
+                <li>Client Projects</li>
+            </ul>
+        </div>
 
+        <div class="stat-card">
+            <div class="s-lbl">Gaming</div>
+            <div class="s-val">🎮</div>
+            <ul class="s-list">
+                <li>PUBG Mobile</li>
+                <li>Casual Player</li>
+            </ul>
+        </div>
+
+        <div class="stat-card">
+            <div class="s-lbl">System</div>
+            <div class="s-val">2050</div>
+            <ul class="s-list">
+                <li>University Student</li>
+                <li>Algeria</li>
+            </ul>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- ABOUT -->
-<section id="section-three">
-  <div id="section-three-inner">
-    <div class="sec-lbl">Identity</div>
-    <div class="sec-title">About</div>
-    <div class="g-line"></div>
+<!-- ══════════ ABOUT ══════════ -->
+<section id="about">
+    <div class="sec-head">
+        <div class="sec-title">ABOUT</div>
+    </div>
     <div class="about-box">
-      <div class="a-row">
-        <span class="a-key">Name</span>
-        <span class="a-val">Fellah Amine</span>
-      </div>
-      <div class="a-row">
-        <span class="a-key">Location</span>
-        <span class="a-val">Ain El Assel · Taref · Algeria</span>
-      </div>
-      <div class="a-row">
-        <span class="a-key">Status</span>
-        <span class="a-val">University Student</span>
-      </div>
-      <div class="a-row">
-        <span class="a-key">Chess</span>
-        <span class="a-val">Player</span>
-      </div>
-      <div class="a-row">
-        <span class="a-key">Photography</span>
-        <span class="a-val">Visual Creator</span>
-      </div>
-      <div class="a-row">
-        <span class="a-key">Development</span>
-        <span class="a-val">Self-Taught</span>
-      </div>
-      <div class="a-row">
-        <span class="a-key">Freelance</span>
-        <span class="a-val">Fiverr · 2021 — 2022</span>
-      </div>
-      <div class="a-row">
-        <span class="a-key">System ID</span>
-        <span class="a-val accent">2050</span>
-      </div>
+        <div class="a-row">
+            <span class="a-key">Name</span>
+            <span class="a-val">Fellah Amine</span>
+        </div>
+        <div class="a-row">
+            <span class="a-key">Location</span>
+            <span class="a-val">Ain El Assel, Taref · Algeria</span>
+        </div>
+        <div class="a-row">
+            <span class="a-key">Email</span>
+            <span class="a-val">fellah.amine2050@gmail.com</span>
+        </div>
+        <div class="a-row">
+            <span class="a-key">Phone</span>
+            <span class="a-val">0562 664 409</span>
+        </div>
+        <div class="a-row">
+            <span class="a-key">Status</span>
+            <span class="a-val">University Student</span>
+        </div>
+        <div class="a-row">
+            <span class="a-key">System ID</span>
+            <span class="a-val">2050</span>
+        </div>
     </div>
-  </div>
 </section>
 
-<!-- CONTACT -->
+<!-- ══════════ HOBBIES ══════════ -->
+<section id="hobbies">
+    <div class="sec-head">
+        <div class="sec-title">HOBBIES</div>
+    </div>
+    <div class="hobbies-list">
+        <ul>
+            <li>Chess Player</li>
+            <li>Photography</li>
+            <li>Programming · Self-Taught Developer</li>
+            <li>PUBG Mobile Player</li>
+            <li>Freelancer (Fiverr 2021-2022)</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
 <section id="contact">
-  <div class="contact-wrap">
-    <div class="sec-lbl">Signal</div>
-    <div class="sec-title">Contact</div>
-    <div class="g-line"></div>
-    <div class="c-box">
-      <a href="mailto:fellah.amine2050@gmail.com" class="c-item">
-        <span class="c-ico">✉</span>
-        <span class="c-txt">fellah.amine2050@gmail.com</span>
-      </a>
-      <a href="tel:0562664409" class="c-item">
-        <span class="c-ico">◎</span>
-        <span class="c-txt">0562 664 409</span>
-      </a>
-      <div class="c-item">
-        <span class="c-ico">◈</span>
-        <span class="c-txt">Ain El Assel · Taref · Algeria</span>
-      </div>
+    <div class="sec-head">
+        <div class="sec-title">CONTACT</div>
     </div>
-  </div>
+    <div class="c-box">
+        <a href="mailto:fellah.amine2050@gmail.com" class="c-item">
+            <span class="c-ico">✉</span>
+            <span class="c-txt">fellah.amine2050@gmail.com</span>
+        </a>
+        <a href="tel:0562664409" class="c-item">
+            <span class="c-ico">☎</span>
+            <span class="c-txt">0562 664 409</span>
+        </a>
+        <div class="c-item">
+            <span class="c-ico">◉</span>
+            <span class="c-txt">Ain El Assel · Taref · Algeria</span>
+        </div>
+    </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ══════════ FOOTER ══════════ -->
 <footer>
-  <p>© 2026 &nbsp;·&nbsp; <span>Fellah Amine</span> &nbsp;·&nbsp; <span>2050</span> &nbsp;·&nbsp; All Systems Online</p>
+    <p>© 2026 · <span>Fellah Amine</span> · <span>2050</span></p>
 </footer>
 
 <script>
-(function(){
+(function() {
+  'use strict';
 
-// ── METEOR RISE ON LOAD ──
-window.addEventListener('load', function(){
-  const img  = document.getElementById('meteor-img');
-  const dust = document.getElementById('dust');
-  setTimeout(function(){
-    img.classList.add('landed');
-    dust.classList.add('pop');
-  }, 300);
-});
+  // ===================== METEOR ANIMATION =====================
+  const meteorImg = document.getElementById('meteor-img');
+  
+  setTimeout(() => {
+    meteorImg.classList.add('visible');
+  }, 800);
 
-// ── TYPING ──
-const typeEl = document.getElementById('typeEl');
-const phrases = [
-  'Self-Taught Developer',
-  'Chess Player',
-  'Photographer',
-  'Freelancer · 2021 / 2022',
-  'Behavioral Analyst · 2050'
-];
-let pi=0, ci=0, del=false;
-function tick(){
-  const cur = phrases[pi];
-  typeEl.textContent = del ? cur.slice(0,ci-1) : cur.slice(0,ci+1);
-  if(!del) ci++; else ci--;
-  if(!del && ci===cur.length){ del=true; setTimeout(tick,1800); return; }
-  if(del && ci===0){ del=false; pi=(pi+1)%phrases.length; }
-  setTimeout(tick, del ? 36 : 72);
-}
-setTimeout(tick, 2400);
+  // ===================== HERO FADE =====================
+  function updateHeroOpacity() {
+    const fade = Math.max(0, 1 - window.scrollY / (window.innerHeight * 0.3));
+    document.getElementById('hero').style.opacity = fade;
+    
+    // Fade meteor too
+    const meteorFade = Math.max(0, 1 - window.scrollY / (window.innerHeight * 0.5));
+    meteorImg.style.opacity = meteorFade * 0.85;
+  }
+  window.addEventListener('scroll', updateHeroOpacity, { passive: true });
 
-// ── HERO FADE ON SCROLL ──
-window.addEventListener('scroll', function(){
-  const fade = Math.max(0, 1 - scrollY/(innerHeight*.32));
-  document.getElementById('hero').style.opacity = fade;
-  const hint = document.querySelector('.scroll-hint');
-  if(hint) hint.style.opacity = Math.max(0, 1 - scrollY/180);
-}, {passive:true});
+  // ===================== FIXED CARDS =====================
+  const fixedCards = document.getElementById('fixed-cards');
+  const cardsGrid = fixedCards.querySelector('.grid');
 
-// ── FIXED CARDS ──
-const fixedCards  = document.getElementById('fixed-cards');
-const cardsGrid   = fixedCards.querySelector('.grid');
+  function tickCards() {
+    const trigger = document.getElementById('cards-trigger');
+    const rect = trigger.getBoundingClientRect();
+    const triggerTop = rect.top + window.scrollY;
+    const triggerHeight = rect.height;
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
 
-function tickCards(){
-  const trigger = document.getElementById('cards-trigger');
-  const rect    = trigger.getBoundingClientRect();
-  const trigTop = rect.top + scrollY;
-  const trigH   = rect.height;
-  const sy      = scrollY;
-  const vh      = innerHeight;
+    const start = triggerTop - vh * 0.5;
+    const end = triggerTop + triggerHeight - vh * 0.3;
+    const range = end - start;
 
-  const start = trigTop - vh*.5;
-  const end   = trigTop + trigH - vh*.3;
-  const range = end - start;
+    let progress = range > 0 ? (scrollY - start) / range : 0;
+    progress = Math.max(0, Math.min(1, progress));
 
-  let progress = range>0 ? (sy-start)/range : 0;
-  progress = Math.max(0, Math.min(1, progress));
+    const isActive = scrollY >= start - vh * 0.2 && scrollY <= end + vh * 0.3;
+    const fadeIn = Math.min(1, Math.max(0, (scrollY - (start - vh * 0.2)) / (vh * 0.2)));
+    const fadeOut = Math.min(1, Math.max(0, (end + vh * 0.3 - scrollY) / (vh * 0.3)));
+    const containerOpacity = isActive ? Math.min(fadeIn, fadeOut) : 0;
 
-  const fadeIn  = Math.min(1, Math.max(0, (sy-(start-vh*.2))/(vh*.2)));
-  const fadeOut = Math.min(1, Math.max(0, (end+vh*.3-sy)/(vh*.3)));
-  const isActive = sy>= start-vh*.2 && sy<=end+vh*.3;
-  const op = isActive ? Math.min(fadeIn, fadeOut) : 0;
+    fixedCards.style.opacity = containerOpacity;
+    fixedCards.style.pointerEvents = containerOpacity > 0.1 ? 'auto' : 'none';
 
-  fixedCards.style.opacity = op;
-  fixedCards.style.pointerEvents = op>.1 ? 'auto' : 'none';
+    const isMobile = window.innerWidth < 768;
+    const revealPct = progress * 130;
+    if (isMobile) {
+      cardsGrid.style.maskImage = `linear-gradient(to bottom, black ${revealPct}%, transparent ${revealPct + 20}%)`;
+      cardsGrid.style.webkitMaskImage = `linear-gradient(to bottom, black ${revealPct}%, transparent ${revealPct + 20}%)`;
+    } else {
+      cardsGrid.style.maskImage = `linear-gradient(to right, black ${revealPct}%, transparent ${revealPct + 15}%)`;
+      cardsGrid.style.webkitMaskImage = `linear-gradient(to right, black ${revealPct}%, transparent ${revealPct + 15}%)`;
+    }
 
-  const mob = innerWidth < 680;
-  const pct = progress * 130;
-  const mask = mob
-    ? `linear-gradient(to bottom,black ${pct}%,transparent ${pct+20}%)`
-    : `linear-gradient(to right,black ${pct}%,transparent ${pct+15}%)`;
-  cardsGrid.style.maskImage = mask;
-  cardsGrid.style.webkitMaskImage = mask;
+    requestAnimationFrame(tickCards);
+  }
 
   requestAnimationFrame(tickCards);
-}
-requestAnimationFrame(tickCards);
 
-// ── ABOUT INTERSECTION ──
-const s3  = document.getElementById('section-three-inner');
-const obs = new IntersectionObserver(([e])=>{
-  if(e.isIntersecting){ s3.classList.add('visible'); obs.unobserve(s3); }
-}, {threshold:.15});
-obs.observe(s3);
-
+  // ===================== SCROLL HINT FADE =====================
+  window.addEventListener('scroll', () => {
+    const hint = document.querySelector('.scroll-hint');
+    if (hint) hint.style.opacity = Math.max(0, 1 - scrollY / 250);
+  });
 })();
 </script>
 </body>
